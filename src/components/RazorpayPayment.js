@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios"
 const RazorpayPayment = () => {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [received,setReceived]= useState({})
   const baseUrl = "https://api-irlvtnbila-uc.a.run.app/api";
   let email = localStorage.getItem("email")
   useEffect(() => {
@@ -45,6 +46,7 @@ const RazorpayPayment = () => {
         axios.request(config)
         .then((response) => {
           console.log(JSON.stringify(response.data));
+          setReceived(response.data)
           if (!response.data) {
             alert("Failed to create order.");
             return;
@@ -71,8 +73,8 @@ const RazorpayPayment = () => {
         },
         prefill: {
           name: "John Doe",
-          email: "johndoe@example.com",
-          contact: "9999999999",
+          email: "jas131059@gmail.com",
+          contact: "9487670852",
         },
         notes: {
           address: "Corporate Office",
@@ -92,7 +94,7 @@ const RazorpayPayment = () => {
 
   const verifyPayment = async (paymentResponse) => {
     try {
-      const response = await fetch('http://localhost:5000/verify-payment', {  // Replace with your backend API URL
+      const response = await fetch(`${baseUrl}/verify-payment`, {  // Replace with your backend API URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

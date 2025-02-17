@@ -59,7 +59,7 @@ const BNIForm = () => {
 
     const timer = setTimeout(() => {
       setIsLoading(true); // Set loading state while fetching
-      const url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}&search=${searchQuery}`;
+      const url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}&memberName=${searchQuery}`;
       
       axios
         .get(url)
@@ -306,11 +306,13 @@ const BNIForm = () => {
         <input
           type="text"
           name="memberName"
-          va
           placeholder="Search Member"
-          value={formData.memberName}
+          value={formData.memberName} // Ensures the input reflects state
           onClick={() => setDropdownOpenMember(!dropdownOpenMember)}
-          onChange={(e) => setSearchQuery(e.target.value)} // Update searchQuery on typing
+          onChange={(e) => {
+            setSearchQuery(e.target.value); // Update search query
+            setFormData(prev => ({ ...prev, memberName: e.target.value })); // Update formData with current input value
+          }}
           className="dropdown-input"
         />
         {dropdownOpenMember && (
