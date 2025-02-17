@@ -29,6 +29,8 @@ const BNIForm = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownOpenMember, setDropdownOpenMember] = useState(false);
   const [dropdownOpenPowerTeam,setdropdownOpenPowerTeam] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const chapterDropdownRef = useRef(null);
   const memberDropdownRef = useRef(null);
@@ -53,13 +55,26 @@ const BNIForm = () => {
 
   // Fetch Members based on selected Chapter
   useEffect(() => {
-    if (!formData.chapterName) return;
-    const url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}`;
-    axios
-      .get(url)
-      .then((response) => setMembers(response.data?.data || []))
-      .catch((error) => console.error("Error fetching members:", error));
-  }, [formData.chapterName]);
+    if (!formData.chapterName || !searchQuery) return;
+
+    const timer = setTimeout(() => {
+      setIsLoading(true); // Set loading state while fetching
+      const url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}&search=${searchQuery}`;
+      
+      axios
+        .get(url)
+        .then((response) => {
+          const data = response.data?.data || [];
+          const filteredMembers = data.filter(member => !member.isRegistered);
+          setMembers(filteredMembers);
+        })
+        .catch((error) => console.error("Error fetching members:", error))
+        .finally(() => setIsLoading(false)); // Reset loading state after request
+    }, 500); // Wait 500ms after the user stops typing
+
+    // Cleanup function to clear the timer if the searchQuery changes before timeout
+    return () => clearTimeout(timer);
+  }, [searchQuery, formData.chapterName]);
 
   // Close dropdown when clicking outside (for chapters)
   useEffect(() => {
@@ -127,6 +142,7 @@ const BNIForm = () => {
       await axios.post(url,newobj)
       .then((response)=>{
         if(response.data){
+          localStorage.setItem("email",formData.email)
           toast.success(response.data.message)
           setTimeout(()=>navigate(`/payment/${formData.registrationType}`),2000)
         }
@@ -151,6 +167,7 @@ const BNIForm = () => {
       await axios.put(url,newobj)
       .then((response)=>{
         if(response.data){
+          localStorage.setItem("email",formData.email)
           toast.success(response.data.message)
           setTimeout(()=>navigate(`/payment/${formData.registrationType}`),2000)
         }
@@ -176,6 +193,7 @@ const BNIForm = () => {
       await axios.post(url,newobj)
       .then((response)=>{
         if(response.data){
+          localStorage.setItem("email",formData.email)
           toast.success(response.data.message)
           setTimeout(()=>navigate(`/payment/${formData.registrationType}`),2000)
         }
@@ -198,6 +216,7 @@ const BNIForm = () => {
       await axios.post(url,newobj)
       .then((response)=>{
         if(response.data){
+          localStorage.setItem("email",formData.email)
           toast.success(response.data.message)
           setTimeout(()=>navigate(`/payment/${formData.registrationType}`),2000)
         }
@@ -207,11 +226,14 @@ const BNIForm = () => {
   };
 
   return (
+    <div style={{backgroundColor:"#ededff"}}>
     <div className="container">
       <h2 className="title">Registration Here</h2>
+      <div style={{height:"1px", width:"100%",backgroundColor:"red"}} />
       <form onSubmit={handleSubmit} className="registration-form">
         {/* Registration Type (Radio Buttons) */}
         <div className="form-group">
+        <br/>
           <label>Registration Type</label>
           <div className="radio-group">
             {["Member", "Visitor", "Display Table", "Goody bag"].map((type) => (
@@ -229,8 +251,23 @@ const BNIForm = () => {
             ))}
           </div>
         </div>
-
+        {
+          formData.registrationType === "Visitor" && (
+        <div className="form-group">
+          <label>Name</label>
+          <div className="name-fields">
+            <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
+            <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
+          </div>
+        </div>
+          )
+        }
+        {
+          formData.registrationType === "Visitor" &&
+        <label>invited By</label>
+        }
         {/* Chapter Name Dropdown */}
+        <div className="name-fields">
         <div className="form-group">
           <label>Chapter Name</label>
           <div className="dropdown-container" ref={chapterDropdownRef}>
@@ -262,53 +299,46 @@ const BNIForm = () => {
             )}
           </div>
         </div>
-
         {/* Member Name Dropdown */}
         <div className="form-group">
-          <label>Member Name</label>
-          <div className="dropdown-container" ref={memberDropdownRef}>
-            <input
-              type="text"
-              name="memberName"
-              placeholder="Select Member"
-              value={formData.memberName}
-              readOnly
-              onClick={() => setDropdownOpenMember(!dropdownOpenMember)}
-              className="dropdown-input"
-            />
-            {dropdownOpenMember && (
-              <div className="dropdown-list">
-                {members.length > 0 ? (
-                  members.map((item, index) => (
-                    <div
-                      key={index}
-                      className="dropdown-item"
-                      onClick={() => handleMemberChange(item)}
-                    >
-                    {/* {console.log(item)} */}
-                      {item["First Name"]} {item["Last Name"]}
-                    </div>
-                  ))
-                ) : (
-                  <div className="dropdown-item">No members found</div>
-                )}
-              </div>
+      <label>Member Name</label>
+      <div className="dropdown-container" ref={memberDropdownRef}>
+        <input
+          type="text"
+          name="memberName"
+          va
+          placeholder="Search Member"
+          value={formData.memberName}
+          onClick={() => setDropdownOpenMember(!dropdownOpenMember)}
+          onChange={(e) => setSearchQuery(e.target.value)} // Update searchQuery on typing
+          className="dropdown-input"
+        />
+        {dropdownOpenMember && (
+          <div className="dropdown-list">
+            {isLoading ? (
+              <div className="dropdown-item">Loading...</div>
+            ) : members.length > 0 ? (
+              members.map((item, index) => (
+                <div
+                  key={index}
+                  className="dropdown-item"
+                  onClick={() => handleMemberChange(item)}
+                >
+                  {item["First Name"]} {item["Last Name"]}
+                </div>
+              ))
+            ) : (
+              <div className="dropdown-item">No members found</div>
             )}
           </div>
+        )}
+      </div>
+    </div>
         </div>
 
+
         {/* Name Fields */}
-        {
-          formData.registrationType === "Visitor" && (
-        <div className="form-group">
-          <label>Name</label>
-          <div className="name-fields">
-            <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
-            <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
-          </div>
-        </div>
-          )
-        }
+        
         <div className="form-group">
           <label>Email</label>
           <input type="email" name="email"  readOnly={formData.registrationType !== "Visitor"?true:false} placeholder="Your Email"  value={formData.email} onChange={handleChange} required />
@@ -387,6 +417,7 @@ const BNIForm = () => {
 
         <button type="submit" className="submit-btn">Submit</button>
       </form>
+    </div>
     </div>
   );
 };

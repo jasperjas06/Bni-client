@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-
+import axios from "axios"
 const RazorpayPayment = () => {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
-
+  const baseUrl = "https://api-irlvtnbila-uc.a.run.app/api";
+  let email = localStorage.getItem("email")
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -15,48 +16,113 @@ const RazorpayPayment = () => {
     };
   }, []);
 
-  const handlePayment = async () => {
+  const initiatePayment = async () => {
     if (!razorpayLoaded) {
       alert("Razorpay script not loaded yet.");
       return;
     }
 
-    const options = {
-      key: "rzp_live_EAMXNFUzpu2bkT", // Replace with your Razorpay Key ID
-      amount: 50000, // Amount in paisa (e.g., 50000 for ₹500)
-      currency: "INR",
-      name: "Your Company Name",
-      description: "Test Transaction",
-      image: "https://your-logo-url.com",
-      handler: function (response) {
-        alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
-      },
-      prefill: {
-        name: "John Doe",
-        email: "johndoe@example.com",
-        contact: "9999999999",
-      },
-      notes: {
-        address: "Corporate Office",
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
+    // 1. Call your backend to create an order
+    try {
+        let url = `${baseUrl}/create-payment`
+        let data = JSON.stringify({
+          "amount": 2,
+          "currency": "INR",
+          "receipt": "receipt_001",
+          email:email
+        });
+        
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url:  url   ,
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data : data
+        };
+        
+        axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          if (!response.data) {
+            alert("Failed to create order.");
+            return;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
+      
+
+      const options = {
+        key: "rzp_live_EAMXNFUzpu2bkT",  // Your Razorpay Key ID
+        amount: data.amount,            // Order amount (in paisa)
+        currency: data.currency,
+        order_id: data.orderId,         // Use the order ID received from backend
+        name: "Your Company Name",
+        description: "Test Transaction",
+        image: "https://your-logo-url.com",
+        handler: function (response) {
+          // 2. Verify payment signature with backend
+          verifyPayment(response);
+        },
+        prefill: {
+          name: "John Doe",
+          email: "johndoe@example.com",
+          contact: "9999999999",
+        },
+        notes: {
+          address: "Corporate Office",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (error) {
+      console.error("Error while creating order:", error);
+      alert("Failed to create order.");
+    }
   };
 
+  const verifyPayment = async (paymentResponse) => {
+    try {
+      const response = await fetch('http://localhost:5000/verify-payment', {  // Replace with your backend API URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          payment_id: paymentResponse.razorpay_payment_id,
+          order_id: paymentResponse.razorpay_order_id,
+          signature: paymentResponse.razorpay_signature,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert("Payment verified successfully!");
+      } else {
+        alert("Payment verification failed.");
+      }
+    } catch (error) {
+      console.error("Error while verifying payment:", error);
+      alert("Payment verification failed.");
+    }
+  };
+
+  useEffect(() => {
+    initiatePayment(); // Automatically trigger payment when page loads
+  }, [razorpayLoaded]);
+
   return (
-    <div>
-      <button
-        onClick={handlePayment}
-        style={{ padding: "10px", fontSize: "16px" }}
-        disabled={!razorpayLoaded} // Disable button until Razorpay is loaded
-      >
-        Pay Now
-      </button>
+    <div style={{ height: "100vh", backgroundColor: "#f8f9fa", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      {/* No button needed, payment will open automatically */}
     </div>
   );
 };

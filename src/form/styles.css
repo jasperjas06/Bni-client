@@ -1,76 +1,139 @@
 .container {
-    width: 100%;
-    max-width: 95vw;
-    margin: auto;
+  width: 100%;
+  max-width: 80vw;
+  margin: auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.grid{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+.title {
+  text-align: center;
+  color: #d32f2f;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+}
+
+.dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+.dropdown-list {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  display: block;
+  border-radius: 6px;
+  z-index: 100;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background: #eeeeee;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"] {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+.name-fields{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.submit-btn {
+  width: 100px;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
     padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  .title {
-    text-align: center;
-    color: red;
-  }
-  .form-group {
-    margin-bottom: 15px;
-  }
-  label {
-    display: block;
-    font-weight: bold;
-  }
+  
   .radio-group {
-    display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 10px;
   }
-  .radio-group label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .dropdown-container {
-    position: relative;
-  }
-  .dropdown-input {
-    
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .dropdown-list {
-    position: absolute;
-    width: 180px;
-    background: white;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    display: block;
-    border-radius: 5px;
-    z-index: 100;
-  }
-  .dropdown-item {
-    padding: 10px;
-    cursor: pointer;
-  }
-  .dropdown-item:hover {
-    background: #ddd;
-  }
+
   .submit-btn {
-    width: 100px;
-    padding: 10px;
-    background-color: blue;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    width: 100%;
   }
-  .submit-btn:hover {
-    background-color: darkblue;
-  }
-  input[type="text"], input[type="tel"], input[type="email"] {
-    /* width: ; */
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+}
