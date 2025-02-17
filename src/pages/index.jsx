@@ -28,25 +28,26 @@ const ConferenceBanner = () => {
       <div className="text-left max-w-2xl"
       >
         <Typography variant="h3" fontWeight="bold" gutterBottom sx={{ mt: 20, ml: 20 }}>
-          BNI CBD-B SOUTH 2025
+          BNI CBD-B 2025 
+        </Typography>
+        <Typography variant="h3" fontWeight="bold" gutterBottom sx={{ ml: 20 }}>
+        14-SOUTH ANNIVERSARY
         </Typography>
 
         <Box display="flex" alignItems="center" sx={{ gap: 3, ml: 20 }}>
-          <CalendarToday sx={{ color: "gray" }} />
-          <Typography>April 12 – 2025</Typography>
+  <CalendarToday sx={{ color: "gray" }} />
+  <Typography>April 12, 2025</Typography>
 
-          <Box sx={{ width: 30 }} />
-          
-          <Schedule sx={{ color: "gray" }} />
-          <Typography>08:00 AM</Typography>
-        </Box>
+  <Schedule sx={{ color: "gray" }} />
+  <Typography>08:00 AM</Typography>
+</Box>
 
         <Box display="flex" alignItems="center" sx={{ mt: 2, ml: 20, color: "gray.700" }}>
           <LocationOn sx={{ mr: 1, color: "gray.500" }} />
-          <Typography>Agurchand Manmull Jain College, (A.M. Jain College) Meenambakkam, Chennai, 
+          <Typography>Chennai, 
             Tamilnadu 600061</Typography>
         </Box>
-        <Box display="flex" alignItems="center" sx={{ ml: 120,height:5 }}>
+        <Box display="flex" alignItems="center" sx={{ ml: 110,height:5 }}>
   <img src={RegionlImage} alt="Regional" style={{ width: "100%", maxWidth: "700px" }} />
 </Box>
 <br/>

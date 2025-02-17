@@ -64,7 +64,7 @@ const BNIEventDetails = () => {
       color: 'rgb(207, 32, 48)', 
       lineHeight: '1.6',
       position: 'relative',
-      left: '500px', 
+      left: '400px', 
     }
   };
 
@@ -77,18 +77,18 @@ const BNIEventDetails = () => {
         Biggest Business Networking Event of the Year 2025
         </h1>
         <ul style={styles.bulletPoints}>
-          {/* <li style={styles.bulletPoint}>
-            Meet BNI's CEO Mary Kennedy Thompson
-          </li> */}
-          <li style={styles.bulletPoint}>
-          Link up with over 1000+ BNI Member 
-          </li>
-          <li style={styles.bulletPoint}>
-          Experience New Insights 
-          </li>
-          <li style={styles.bulletPoint}>
-          Enhance your Business Visibility on the Regional Platform
-          </li>
+        <li style={{ ...styles.bulletPoint, listStyleType: "none" }}>
+  <span style={{ fontSize: "16px", color: "black", marginRight: "8px" }}>•</span>
+  Link up with over 1000+ BNI Member 
+</li>
+            <li style={{ ...styles.bulletPoint, listStyleType: "none" }}>
+  <span style={{ fontSize: "16px", color: "black", marginRight: "8px" }}>•</span>
+  Experience New Insights 
+</li>
+   <li style={{ ...styles.bulletPoint, listStyleType: "none" }}>
+  <span style={{ fontSize: "16px", color: "black", marginRight: "8px" }}>•</span>
+  Enhance your Business Visibility on the Regional Platform
+</li>
         </ul>
 
         <p style={styles.footer}>

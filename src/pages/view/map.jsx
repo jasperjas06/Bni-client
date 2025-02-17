@@ -1,17 +1,13 @@
 import React from "react";
 import { MapPin } from "lucide-react";
-
+import Map from "../../assets/map.jpg"
 const HotelDetails = () => {
   return (
     <div className="container">
       <div className="card">
         {/* Header Section */}
         <div className="header">
-          <div className="rating">
-            <span className="rating-score">4.7</span>
-            <div className="stars">★★★★★</div>
-            <span className="reviews">(17,220 reviews)</span>
-          </div>
+       
         </div>
 
         {/* Content Section */}
@@ -19,45 +15,43 @@ const HotelDetails = () => {
           {/* Images Grid */}
           <div className="image-grid">
             {/* Hotel Image */}
-            <div className="image-container">
-              <img
-                src="https://via.placeholder.com/800x600"
-                alt="Grand Hyatt Kochi Bolgatty Pool View"
-                className="image"
-              />
-            </div>
-
-            {/* Map Image */}
-            <div className="image-container">
-              <img
-                src="https://via.placeholder.com/800x600"
-                alt="Hotel Location Map"
-                className="image"
-              />
-            </div>
-          </div>
-
-          {/* Address Section */}
-          <div className="address-section">
+            <div className="">
+            <div className="address-section">
             <h3 className="address-title">Address</h3>
             <div className="address">
               {/* <MapPin className="icon" /> */}
               <div>
-                <p className="hotel-name">Grand Hyatt Kochi Bolgatty</p>
-                <p>Mulavukad, Kochi, Kerala - 682504</p>
-                <p>India</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Directions Button */}
-          <button
+                {/* <p className="hotel-name">BNI Chennai </p> */}
+                <p>Agurchand Manmull Jain College, (A.M. Jain College) Meenambakkam </p>
+                <p>Chennai, Tamilnadu 600061</p>
+                <button
             className="directions-button"
             onClick={() => window.open("https://maps.google.com", "_blank")}
           >
             <MapPin className="button-icon" />
             Get Directions
           </button>
+              </div>
+              
+            </div>
+          </div>
+            </div>
+
+            {/* Map Image */}
+            <div className="image-container">
+            <img
+    src={Map}  // Use the imported map image here
+    alt="Hotel Location Map"
+    className="image"
+  />
+            </div>
+          </div>
+
+          {/* Address Section */}
+         
+
+          {/* Directions Button */}
+       
         </div>
       </div>
     </div>
@@ -131,7 +125,8 @@ style.innerHTML = `
   border-radius: 8px;
   overflow: hidden;
   background-color: #eee;
-  height: 200px;
+  height: 400px;
+  width: 300px;
 }
 
 .image {
