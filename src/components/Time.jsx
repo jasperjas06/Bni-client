@@ -59,8 +59,9 @@ const CountdownTimer = ({ targetDate }) => {
 
       {/* Vertical divider except for the last item */}
       {index < arr.length - 1 && (
-        <Box sx={{ height: 40, width: 1, backgroundColor: "gray", mx: 1 }} />
-      )}
+  <Box sx={{ height: 40, width: 1, borderRight: "1px solid gray", mx: 1 }} />
+)}
+
     </Box>
   ))}
 </Box>
