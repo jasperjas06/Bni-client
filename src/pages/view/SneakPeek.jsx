@@ -28,7 +28,8 @@ const BNIHighlights = () => {
     },
     subTitle: {
       color: '#000',
-      fontSize: '32px',
+      fontSize: '140%',
+      fontWeight: 'bold',
       margin: '0',
       lineHeight: '1.2'
     },

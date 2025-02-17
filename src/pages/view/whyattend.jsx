@@ -9,7 +9,8 @@ container: {
   display: 'flex',
   padding: '16px',
   background: 'linear-gradient(to right, #fff1f2,)',
-  overflow: 'hidden', // Hide both horizontal and vertical scrollbars
+  overflow: 'hidden', 
+  marginTop:'150px' // Hide both horizontal and vertical scrollbars
 },
 
     card: {

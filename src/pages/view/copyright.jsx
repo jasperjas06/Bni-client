@@ -55,17 +55,7 @@ const Footer = () => {
       <div style={footerStyles.container}>
         <div style={footerStyles.flexContainer}>
           {/* Terms and Conditions Link */}
-          <div style={footerStyles.textCenter}>
-            <span>Please find the </span>
-            <a 
-              href="#" 
-              style={footerStyles.link}
-              onMouseOver={(e) => e.target.style.color = footerStyles.linkHover.color}
-              onMouseOut={(e) => e.target.style.color = footerStyles.link.color}
-            >
-              Terms and Conditions
-            </a>
-          </div>
+          
 
           {/* Download Buttons */}
           <div style={footerStyles.downloadButtons}>
