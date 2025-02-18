@@ -143,15 +143,21 @@ const ConferenceBanner = () => {
       <div>
         <ConferenceSection />
         <br/>
+        <br/>
         <BNIEventDetails />
+        <br />
         <br />
         <BNIHighlights />
         <br />
+        <br />
         <Connect />
+        <br />
         <br />
        
         <br />
+        <br />
         <HotelDetails />
+        <br />
         <br />
         <Footer />
       </div>
