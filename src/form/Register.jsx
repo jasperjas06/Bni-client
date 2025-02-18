@@ -23,7 +23,7 @@ const BNIForm = () => {
     businessType: "",
     synergy: false,
   });
-
+  const [loader, setloader] = useState(false)
   const [chapters, setChapters] = useState([]);
   const [tablecount, setTablecount] = useState("");
   const [members, setMembers] = useState([]);
@@ -76,20 +76,29 @@ const BNIForm = () => {
     if (!formData.chapterName || !searchQuery) return;
 
     const timer = setTimeout(() => {
+      console.log(searchQuery,"search")
       setIsLoading(true); // Set loading state while fetching
       let url =""
-      if (searchQuery.trim()) {  // Ensure no spaces are counted as valid input
-        url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}&memberName=${searchQuery}`;
-    } else if(formData.synergy === "Yes" && formData.chapterName) {
+      
+    if(formData.synergy == "Yes" && formData.chapterName) {
         url = `${baseUrl}/synergy-member?chapterName=${formData.chapterName}`;
-      }else{
+      }
+
+      if(formData.chapterName){
         url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}`;
     }
+    if (searchQuery) {  // Ensure no spaces are counted as valid input
+      url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}&memberName=${searchQuery}`;
+  } if(searchQuery == ""){
+    url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}`;
+  }
+  
 
       axios
         .get(url)
         .then((response) => {
           const data = response.data?.data || [];
+          console.log(response.data.data,url)
           const filteredMembers = data.filter((member) => !member.isRegistered);
           if(formData.registrationType === "Member"){
             setMembers(filteredMembers);
@@ -160,140 +169,186 @@ const BNIForm = () => {
     if (formData.registrationType !== "Visitor") {
       formData.email = value["Email"];
     }
-    console.log(value);
+    // console.log(value);
     setFormData((prev) => ({
       ...prev,
-      memberName: `${value["First Name"]} ${value["Last Name"]}`,
+      memberName: formData.synergy == "Yes" ? `${value["MemberName"]}`: `${value["First Name"]} ${value["Last Name"]}`,
     }));
     setDropdownOpenMember(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.termsAccepted) return alert("Please accept the terms.");
-    // goodybag
-    if (formData.registrationType === "Goody bag") {
-      let url = `${baseUrl}/goodybag`;
-      let newobj = {
-        memberName: formData.memberName,
-        chapterName: formData.chapterName,
-        powerTeam: formData.powerTeam,
-        categoryInBNI: formData.categoryInBNI,
-        email: formData.email,
-        whatsappNumber: formData.whatsappNumber,
-        phone: formData.mobileNumber,
-      };
-      await axios
-        .post(url, newobj)
-        .then((response) => {
-          if (response.data) {
-            localStorage.setItem("email", formData.email);
-            localStorage.setItem("name", formData.memberName);
-            toast.success(response.data.message);
-            setTimeout(
-              () => navigate(`/payment/${formData.registrationType}`),
-              2000
-            );
+    
+    try {
+      setloader(true);
+  
+      // Validate required fields
+      if (!formData.termsAccepted) {
+        toast.error("Please accept the terms.");
+        setloader(false);
+        return;
+      }
+  
+      if (!formData.email || !formData.registrationType) {
+        toast.error("Please fill in all required fields");
+        setloader(false);
+        return;
+      }
+      if(formData.registrationType !== "Visitor" && !formData.powerTeam){
+        toast.error("Please fill in all required fields (Power Team)");
+        setloader(false);
+        return;
+      }
+  
+      // Common data validation
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+      if (!isValidEmail) {
+        toast.error("Please enter a valid email address");
+        setloader(false);
+        return;
+      }
+  
+      // Phone number validation (assuming 10 digits)
+      if (formData.mobileNumber && !/^\d{10}$/.test(formData.mobileNumber)) {
+        toast.error("Please enter a valid 10-digit mobile number");
+        setloader(false);
+        return;
+      }
+  
+      let url;
+      let newobj;
+  
+      // Prepare request data based on registration type
+      switch (formData.registrationType) {
+        case "Goody bag":
+          url = `${baseUrl}/goodybag`;
+          newobj = {
+            memberName: formData.memberName?.trim(),
+            chapterName: formData.chapterName?.trim(),
+            powerTeam: formData.powerTeam?.trim(),
+            categoryInBNI: formData.categoryInBNI?.trim(),
+            email: formData.email?.trim(),
+            whatsappNumber: formData.whatsappNumber?.trim(),
+            phone: formData.mobileNumber?.trim(),
+          };
+          break;
+  
+        case "Member":
+          url = `${baseUrl}/updateMember`;
+          newobj = {
+            firstName: memberData["First Name"]?.trim(),
+            lastName: memberData["Last Name"]?.trim(),
+            chapterName: formData.chapterName?.trim(),
+            powerTeam: formData.powerTeam?.trim(),
+            categoryInBNI: formData.categoryInBNI?.trim(),
+            email: formData.email?.trim(),
+            whatsappNumber: formData.whatsappNumber?.trim(),
+            phone: formData.mobileNumber?.trim(),
+            isRegistered: true,
+          };
+          break;
+  
+        case "Visitor":
+          url = `${baseUrl}/visitorRegister`;
+          newobj = {
+            firstname: formData.firstName?.trim(),
+            lastname: formData.lastName?.trim(),
+            memberName: formData.memberName?.trim(),
+            chapterName: formData.chapterName?.trim(),
+            email: formData.email?.trim(),
+            whatsappNumber: formData.whatsappNumber?.trim(),
+            phone: formData.mobileNumber?.trim(),
+            invitedBy: formData.memberName?.trim(),
+            isRegistered: true,
+            businessType: formData.businessType?.trim(),
+          };
+          break;
+  
+        case "Display Table":
+          url = `${baseUrl}/displaytable`;
+          newobj = {
+            memberName: formData.memberName?.trim(),
+            chapterName: formData.chapterName?.trim(),
+            powerTeam: formData.powerTeam?.trim(),
+            categoryInBNI: formData.categoryInBNI?.trim(),
+            email: formData.email?.trim(),
+            whatsappNumber: formData.whatsappNumber?.trim(),
+            phone: formData.mobileNumber?.trim(),
+            synergy: formData.synergy?.trim(),
+          };
+          break;
+  
+        default:
+          toast.error("Invalid registration type");
+          setloader(false);
+          return;
+      }
+  
+      // Validate that required fields are present in newobj
+      const requiredFields = ['email', 'chapterName'];
+      const missingFields = requiredFields.filter(field => !newobj[field]);
+      
+      if (missingFields.length > 0) {
+        toast.error(`Please fill in the following required fields: ${missingFields.join(', ')}`);
+        setloader(false);
+        return;
+      }
+  
+      // Make API request
+      try {
+        const response = await axios.post(url, newobj);
+        
+        if (response?.data) {
+          // Store data in localStorage
+          localStorage.setItem("email", formData.email);
+          
+          // Set name based on registration type
+          let name = '';
+          if (formData.registrationType === "Member") {
+            name = `${newobj.firstName} ${newobj.lastName}`;
+          } else if (formData.registrationType === "Visitor") {
+            name = `${newobj.firstname} ${newobj.lastname}`;
+          } else {
+            name = newobj.memberName;
           }
-        })
-        .catch((error) => toast.error(error));
-    }
-
-    // memeber
-    if (formData.registrationType === "Member") {
-      let url = `${baseUrl}/updateMember`;
-      let newobj = {
-        firstName: memberData["First Name"],
-        lastName: memberData["Last Name"],
-        chapterName: formData.chapterName,
-        powerTeam: formData.powerTeam,
-        categoryInBNI: formData.categoryInBNI,
-        email: formData.email,
-        whatsappNumber: formData.whatsappNumber,
-        phone: formData.mobileNumber,
-        isRegistered: true,
-      };
-      await axios
-        .put(url, newobj)
-        .then((response) => {
-          if (response.data) {
-            localStorage.setItem("email", formData.email);
-            localStorage.setItem(
-              "name",
-              newobj.firstName + "" + newobj.lastName
-            );
-            toast.success(response.data.message);
-            setTimeout(
-              () => navigate(`/payment/${formData.registrationType}`),
-              2000
-            );
+          localStorage.setItem("name", name);
+  
+          // Store synergy if present
+          if (formData.synergy) {
+            localStorage.setItem("synergy", formData.synergy);
           }
-        })
-        .catch((error) => toast.error(error));
-    }
-
-    // visitors
-    if (formData.registrationType === "Visitor") {
-      let url = `${baseUrl}/visitorRegister`;
-      let newobj = {
-        firstname: formData.firstName,
-        lastname: formData.lastName,
-        memberName: formData.memberName,
-        chapterName: formData.chapterName,
-        email: formData.email,
-        whatsappNumber: formData.whatsappNumber,
-        phone: formData.mobileNumber,
-        invitedBy: formData.memberName,
-        isRegistered: true,
-        businessType: formData.businessType,
-      };
-      await axios
-        .post(url, newobj)
-        .then((response) => {
-          if (response.data) {
-            localStorage.setItem("email", formData.email);
-            localStorage.setItem(
-              "name",
-              newobj.firstname + "" + newobj.lastname
-            );
-            toast.success(response.data.message);
-            setTimeout(
-              () => navigate(`/payment/${formData.registrationType}`),
-              2000
-            );
-          }
-        })
-        .catch((error) => toast.error(error));
-    }
-    // console.log(formData);
-    // Display Table
-    if (formData.registrationType === "Display Table") {
-      let url = `${baseUrl}/displaytable`;
-      let newobj = {
-        memberName: formData.memberName,
-        chapterName: formData.chapterName,
-        powerTeam: formData.powerTeam,
-        categoryInBNI: formData.categoryInBNI,
-        email: formData.email,
-        whatsappNumber: formData.whatsappNumber,
-        phone: formData.mobileNumber,
-        synergy:formData.synergy
-      };
-      await axios
-        .post(url, newobj)
-        .then((response) => {
-          if (response.data) {
-            localStorage.setItem("email", formData.email);
-            localStorage.setItem("name", formData.memberName);
-            if(formData.synergy) localStorage.setItem("synergy",formData.synergy)
-            toast.success(response.data.message);
-            setTimeout(
-              () => navigate(`/payment/${formData.registrationType}`),
-              2000
-            );
-          }
-        })
-        .catch((error) => toast.error(error));
+  
+          toast.success(response.data.message || "Registration successful!");
+          
+          // Navigate after a delay
+          setTimeout(() => {
+            navigate(`/payment/${formData.registrationType}`);
+          }, 2000);
+        }
+      } catch (error) {
+        let errorMessage = "An error occurred during registration";
+        
+        if (error.response) {
+          // Server responded with an error
+          errorMessage = error.response.data?.message || error.response.statusText;
+        } else if (error.request) {
+          // Request was made but no response
+          errorMessage = "No response from server. Please check your connection.";
+        } else {
+          // Something else went wrong
+          errorMessage = error.message;
+        }
+        
+        toast.error(errorMessage);
+        console.error("Registration error:", error);
+      }
+    } catch (error) {
+      // Handle any unexpected errors
+      console.error("Unexpected error:", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setloader(false);
     }
   };
 
@@ -422,7 +477,7 @@ const BNIForm = () => {
                         </div>
                       ))
                     ) : (
-                      <div className="dropdown-item">No chapters found</div>
+                      <div className="dropdown-item"> No chapters found</div>
                     )}
                   </div>
                 )}
@@ -458,7 +513,7 @@ const BNIForm = () => {
                           className="dropdown-item"
                           onClick={() => handleMemberChange(item)}
                         >
-                          {item["First Name"]} {item["Last Name"]}
+                          {item["First Name"]|| item["MemberName"]} {item["Last Name"] ? item["Last Name"]: ""}
                         </div>
                       ))
                     ) : (
@@ -477,7 +532,7 @@ const BNIForm = () => {
             <input
               type="email"
               name="email"
-              readOnly={formData.registrationType !== "Visitor" ? true : false}
+              // readOnly={(formData.registrationType !== "Visitor" || formData.synergy == "No") ? true : false}
               placeholder="Your Email"
               value={formData.email}
               onChange={handleChange}
@@ -535,6 +590,7 @@ const BNIForm = () => {
           )}
 
           {formData.registrationType !== "Visitor" && (
+            <div className="name-fields">
             <div className="form-group">
               <label>Power Team</label>
               <div className="dropdown-container" ref={powerDropdownRef}>
@@ -543,6 +599,7 @@ const BNIForm = () => {
                   name="powerTeam"
                   placeholder="Select Power Team"
                   value={formData.powerTeam}
+                  required={true}
                   readOnly
                   onClick={() =>
                     setdropdownOpenPowerTeam(!dropdownOpenPowerTeam)
@@ -570,6 +627,7 @@ const BNIForm = () => {
                 )}
               </div>
             </div>
+            </div>
           )}
 
           {/* Terms & Conditions */}
@@ -587,8 +645,10 @@ const BNIForm = () => {
             </label>
           </div>
 
-          <button type="submit" className="submit-btn">
-            Submit
+          <button type="submit" style={{backgroundColor:loader?"gray":"#007bff"}} disabled={loader} className="submit-btn">
+            {
+              loader ? "Submitting..." : "Submit"
+            }
           </button>
         </form>
       </div>

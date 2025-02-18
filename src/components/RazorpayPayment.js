@@ -2,60 +2,45 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import backgroundImage from "../assets/image.jpg";
 
 const RazorpayPayment = () => {
-  let { type } = useParams();
+  let {type} = useParams()
+  // console.log(type,"text")
   const navigate = useNavigate();
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
   const baseUrl = "https://api-irlvtnbila-uc.a.run.app/api";
   const email = localStorage.getItem("email");
   const name = localStorage.getItem("name");
-  const [displayData, setDisplaydata] = useState({});
-  const [amountToPay, setAmountToPay] = useState(0);
+  const synergy = localStorage.getItem("synergy")
 
   // Payment Data Based on Date Ranges
   const memberPaymentData = [
-    { start: "2025-01-01", end: "2025-03-15", amount: 354, bannerAmount: 300 },
-    { start: "2025-03-16", end: "2025-03-31", amount: 472, bannerAmount: 400 },
-    { start: "2025-04-01", end: "2025-04-07", amount: 590, bannerAmount: 500 },
-    { start: "2025-04-08", end: "2025-12-31", amount: 750, bannerAmount: 750 },
+    { start: "2025-01-01", end: "2025-03-15", amount: 354 , bannerAmount:300},  
+    { start: "2025-03-16", end: "2025-03-31", amount: 472 ,bannerAmount:400},  
+    { start: "2025-04-01", end: "2025-04-07", amount: 590 ,bannerAmount:500},  
+    { start: "2025-04-08", end: "2025-12-31", amount: 750 ,bannerAmount:750},
   ];
 
   const VisitorPaymentData = [
-    { start: "2025-01-01", end: "2025-03-15", amount: 472, bannerAmount: 400 },
-    { start: "2025-03-16", end: "2025-03-31", amount: 590, bannerAmount: 500 },
-    { start: "2025-04-01", end: "2025-04-07", amount: 767, bannerAmount: 700 },
-    { start: "2025-04-06", end: "2025-12-31", amount: 900, bannerAmount: 900 },
+    { start: "2025-01-01", end: "2025-03-15", amount: 472 ,bannerAmount:400},  
+    { start: "2025-03-16", end: "2025-03-31", amount: 590 ,bannerAmount:500},  
+    { start: "2025-04-01", end: "2025-04-07", amount: 767 ,bannerAmount:700},  
+    { start: "2025-04-06", end: "2025-12-31", amount: 900 ,bannerAmount:900},
   ];
 
-  const getPaymentData = () => {
-    switch (type) {
-      case "Member":
-        return memberPaymentData;
-      case "Visitor":
-        return VisitorPaymentData;
-      default:
-        return [];
-    }
-  };
+  const GoodyBagPaymentData = [
+    { start: "2025-01-01", end: "2025-03-15", amount: 4720 ,bannerAmount:4000},  
+    { start: "2025-03-16", end: "2025-03-31", amount: 472 },  
+    { start: "2025-04-01", end: "2025-04-07", amount: 590 },  
+    { start: "2025-04-06", end: "2025-12-31", amount: 6000 , bannerAmount:6000},
+  ];
 
-  const getBannerAmount = () => {
-    const today = new Date().toISOString().split("T")[0];
-    const paymentData = getPaymentData();
-    const selectedPayment = paymentData.find(
-      (entry) => today >= entry.start && today <= entry.end
-    );
-
-    if (selectedPayment) {
-      setDisplaydata(selectedPayment);
-      setAmountToPay(selectedPayment.amount);
-    }
-  };
-
-  useEffect(() => {
-    getBannerAmount();
-  }, [type]);
+  const DisplayTablePaymentData = [
+    { start: "2025-01-01", end: "2025-03-15", amount: 4720 ,bannerAmount:4000},  
+    { start: "2025-03-16", end: "2025-03-31", amount: 5900 ,bannerAmount:5000},  
+    { start: "2025-04-01", end: "2025-04-07", amount: 6490 ,bannerAmount:5500},  
+    { start: "2025-04-06", end: "2025-12-31", amount: 7000 ,bannerAmount:7000},
+  ];
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -69,39 +54,71 @@ const RazorpayPayment = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (razorpayLoaded && amountToPay > 0) {
-      initiatePayment();
+  // Function to determine the amount based on the current date
+  const getPaymentAmount = () => {
+    const today = new Date().toISOString().split("T")[0]; // Current Date (YYYY-MM-DD)
+    let paymentData;
+    if(type == "Member") {
+      paymentData = memberPaymentData;
+    } else if(type == "Visitor") {
+      paymentData = VisitorPaymentData;
+    } else if(type == "Goody bag") {
+      paymentData = GoodyBagPaymentData;
+    } else if(type == "Display Table") {
+      paymentData = DisplayTablePaymentData;
     }
-  }, [razorpayLoaded, amountToPay]);
+     else {
+      paymentData = [];
+    }
+    
+    const selectedPayment = paymentData.find((entry) => 
+      today >= entry.start && today <= entry.end
+    );
+
+    return selectedPayment ? selectedPayment.amount : 0;
+  };
+
+  useEffect(()=>{
+    if(razorpayLoaded){
+      initiatePayment()
+    }
+  },[razorpayLoaded])
 
   const initiatePayment = async () => {
     if (!razorpayLoaded) {
+      alert("Razorpay script not loaded yet.");
       return;
     }
 
-    const amountInPaise = Math.round(amountToPay * 100);
+    const amountInRupees = getPaymentAmount();
+    if (amountInRupees === 0) {
+      toast.error("No valid payment amount found for today's date.");
+      return;
+    }
+
+    // const amountInPaise = Math.round(amountInRupees * 100); // Convert to paise
 
     try {
       const response = await axios.post(`${baseUrl}/create-payment`, {
-        amount: amountToPay,
+        amount: synergy == "Yes" ? 2500 : amountInRupees,
         currency: "INR",
         receipt: `receipt_${new Date().getTime()}`,
         email: email,
       });
 
       if (!response.data || !response.data.id) {
-        toast.error("Failed to create order.");
+        alert("Failed to create order.");
         return;
       }
 
       const options = {
-        key: "rzp_live_EAMXNFUzpu2bkT",
+        key: "rzp_test_MGDrUtAHyZoesH",
         amount: response.data.amount,
         currency: response.data.currency,
         order_id: response.data.id,
         name: "BNI CBD-B ANNIVERSARY",
         description: "Registration fee",
+        image: "https://your-logo-url.com",
         handler: function (paymentResponse) {
           verifyPayment({
             razorpay_order_id: response.data.id,
@@ -119,6 +136,7 @@ const RazorpayPayment = () => {
 
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
+
       paymentObject.on("payment.failed", (failureResponse) => {
         toast.error(`Payment failed: ${failureResponse.error.description}`);
       });
@@ -138,6 +156,9 @@ const RazorpayPayment = () => {
       const data = await response.json();
       if (data.success) {
         toast.success("Payment verified successfully!");
+        localStorage.removeItem("name")
+        localStorage.removeItem("email")
+        localStorage.removeItem("synergy")
         setTimeout(() => navigate("/"), 2000);
       } else {
         toast.error("Payment verification failed.");
@@ -147,40 +168,10 @@ const RazorpayPayment = () => {
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return `until ${date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`;
-  };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        background: `url(${backgroundImage}) center/cover no-repeat`,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        padding: "20px",
-      }}
-    >
-      {/* {displayData.bannerAmount && (
-        <div
-          style={{
-            backgroundColor: "#fff",
-            padding: "20px 30px",
-            borderRadius: "12px",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-            marginBottom: "20px",
-          }}
-        >
-          <h2 style={{ fontSize: "28px", fontWeight: "bold", color: "#333" }}>
-            <span>{displayData.bannerAmount}</span> {formatDate(displayData.end)}
-          </h2>
-          <p style={{ color: "gray" }}>GST applies</p>
-        </div>
-      )} */}
+    <div style={{ height: "100vh", backgroundColor: "#f8f9fa", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      
     </div>
   );
 };
