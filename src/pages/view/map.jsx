@@ -253,9 +253,10 @@ const BNIConferencePromo = () => {
         startIcon={<MapPin />}
         onClick={() =>
           window.open(
-            "https://www.google.com/maps/dir/12.9851521,80.1794778/AGURCHAND+MANMULL+JAIN+COLLEGE,+railway+station,+BV+Nagar+3rd+Main+Rd,+Meenambakkam,+Chennai,+Tamil+Nadu+600114/@12.9850188,80.1794456,18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3a525e0305be150f:0x85a0453c427fd349!2m2!1d80.1794134!2d12.9848855?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoASAFQAw%3D%3D",
+            "https://www.google.com/maps/place/AGURCHAND+MANMULL+JAIN+COLLEGE/@12.9848907,80.1768385,17z/data=!3m1!4b1!4m6!3m5!1s0x3a525e0305be150f:0x85a0453c427fd349!8m2!3d12.9848855!4d80.1794134!16s%2Fm%2F0269zcg?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoASAFQAw%3D%3D",
             "_blank"
           )
+            // "https://www.google.com/maps/dir/12.9851521,80.1794778/AGURCHAND+MANMULL+JAIN+COLLEGE,+railway+station,+BV+Nagar+3rd+Main+Rd,+Meenambakkam,+Chennai,+Tamil+Nadu+600114/@12.9850188,80.1794456,18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3a525e0305be150f:0x85a0453c427fd349!2m2!1d80.1794134!2d12.9848855?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoASAFQAw%3D%3D",
         }
         sx={{ mt: 2 }}
       >

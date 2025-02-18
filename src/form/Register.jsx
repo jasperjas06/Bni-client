@@ -3,7 +3,7 @@ import axios from "axios";
 import "./styles.css";
 import toast from "react-hot-toast";
 import { data, useNavigate } from "react-router-dom";
-import { colors } from "@mui/material";
+import { Box, colors, Typography } from "@mui/material";
 
 const BNIForm = () => {
   const baseUrl = "https://api-irlvtnbila-uc.a.run.app/api";
@@ -404,8 +404,8 @@ const BNIForm = () => {
           {
             formData.registrationType === "Display Table" &&
             <div className="form-group">
-            <br />
-            <label>Synergy</label>
+            {/* <br /> */}
+            <label>Synergy stal owner</label>
             <div className="radio-group">
               {["Yes", "No"].map(
                 (type) => (
@@ -643,6 +643,29 @@ const BNIForm = () => {
               I agree to the <a href="#">Terms and Conditions</a>. All fees are
               non-refundable and non-transferable.
             </label>
+            <ul style={{marginTop:0}}>
+          <li variant="body1" gutterBottom>
+             Add 1 table & 2 chairs
+          </li>
+          <li variant="body1" gutterBottom>
+             Table top branding allowed - Tent cards, pamphlets & brochures
+          </li>
+          <li variant="body1" gutterBottom>
+             Registration included for display table owners
+          </li>
+          <li variant="body1" gutterBottom>
+             Allocation of tables will be based on power teams
+          </li>
+          <li variant="body1" gutterBottom>
+             No edible items to be displayed or sold
+          </li>
+          <li variant="body1" gutterBottom>
+             Heavy product displays are not allowed
+          </li>
+          <li variant="body1" gutterBottom>
+            7. No direct sales are encouraged in the stalls
+          </li>
+        </ul>
           </div>
 
           <button type="submit" style={{backgroundColor:loader?"gray":"#007bff"}} disabled={loader} className="submit-btn">

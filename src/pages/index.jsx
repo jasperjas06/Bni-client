@@ -33,7 +33,7 @@ const ConferenceBanner = () => {
         backgroundRepeat: "no-repeat",
         minHeight: "100vh", // Ensure full height
       }}>
-      <Box sx={{padding:"20px", ml:{md:"90px", xs:0},}}>
+      <Box sx={{padding:"20px", ml:{md:"90px", xs:0}, display:"flex", justifyContent:"center", alignContent:"center"}}>
       <img
             src={RegionlImage}
             alt="Regional Event"
@@ -88,7 +88,7 @@ const ConferenceBanner = () => {
           fontSize: "1rem",
           textTransform: "uppercase",
         }}
-        onClick={handleOpen}
+        onClick={()=>navigate("/registration_form")}
       >
         Register Now
       </Button>

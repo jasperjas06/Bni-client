@@ -30,7 +30,7 @@ const BNIEventDetails = () => {
       lineHeight: "1.6",
       }}>
       BNI Chennai CBD B & South 14th Anniversary is a flagship annual event of
-        BNI Chennai and a perfect confluence of business, networking and celebrations. The event will take place on 12 April 2025 at
+        BNI Chennai and a perfect confluence of Business, Networking and Celebrations. The event will take place on 12 April 2025 at
          Agurchand Manmull Jain College, (A.M. Jain College) Meenambakkam, Chennai, Tamilnadu 600061
       </div>
     </Container>
