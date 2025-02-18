@@ -1,3 +1,4 @@
+import { Container, Typography } from '@mui/material';
 import React from 'react';
 
 const Connec = () => {
@@ -61,35 +62,45 @@ const Connec = () => {
   const headings = ['CONNECT', 'COLLABORATE', 'CELEBRATE'];
 
   return (
-    <div style={styles.container}>
-      <div style={styles.innerContainer}>
-        <div style={styles.contentSection}>
-          <div style={styles.headingContainer}>
-            {headings.map((word) => (
-              <h1 key={word} style={styles.heading}>
-                <span style={styles.redLetter}>{word[0]}</span>
-                {word.slice(1)}
-              </h1>
-            ))}
-          </div>
-
-          <h2 style={styles.tagline}>
-            Empowering Connections Inspiring Growth
-          </h2>
-
-          <p style={styles.description}>
-            The BNI India National Conference, held this year at the Grand Hyatt Kochi Bolgatty, brings together
-            <br />
-            entrepreneurs nationwide for networking, business growth, and insights on industry trends. Focused 
-            <br />
-            on BNI's "Givers Gain" philosophy, it's a prime opportunity to foster connections and celebrate
-            <br />
-             top-performing members.
-          </p>
-        </div>
+    <Container>
+      <div style={styles.headingContainer}>
+        {headings.map((word) => (
+          <Typography key={word} style={styles.heading}>
+            <span style={styles.redLetter}>{word[0]}</span>
+            {word.slice(1)}
+          </Typography>
+        ))}
       </div>
-    </div>
+    </Container>
   );
 };
 
+// <div style={styles.container}>
+//   <div style={styles.innerContainer}>
+//     <div style={styles.contentSection}>
+      // <div style={styles.headingContainer}>
+      //   {headings.map((word) => (
+      //     <h1 key={word} style={styles.heading}>
+      //       <span style={styles.redLetter}>{word[0]}</span>
+      //       {word.slice(1)}
+      //     </h1>
+      //   ))}
+      // </div>
+
+//       <h2 style={styles.tagline}>
+//         Empowering Connections Inspiring Growth
+//       </h2>
+
+//       <p style={styles.description}>
+//         The BNI India National Conference, held this year at the Grand Hyatt Kochi Bolgatty, brings together
+//         <br />
+//         entrepreneurs nationwide for networking, business growth, and insights on industry trends. Focused 
+//         <br />
+//         on BNI's "Givers Gain" philosophy, it's a prime opportunity to foster connections and celebrate
+//         <br />
+//          top-performing members.
+//       </p>
+//     </div>
+//   </div>
+// </div>
 export default Connec;
