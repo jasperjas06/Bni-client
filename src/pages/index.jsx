@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Box, Typography, Container, Grid, useMediaQuery, useTheme } from "@mui/material";
+import React, { useState } from "react";
+import { Button, Box, Typography, Container, Grid, useMediaQuery, useTheme,Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { LocationOn, Schedule, CalendarToday } from "@mui/icons-material";
 import CountdownTimer from "../components/Time";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +8,19 @@ import BNIEventDetails from "../pages/view/networkevent";
 import RegionlImage from "../assets/Regional.jpg";
 import backgroundImage from "../assets/image.jpg";
 import BNIHighlights from "../pages/view/SneakPeek";
-import AboutDetails from "../pages/view/About";
 import Connect from "../pages/view/Connect";
 import Footer from "../pages/view/copyright";
 import HotelDetails from "../pages/view/map";
 const ConferenceBanner = () => {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleAgree = () => {
+    setOpen(false);
+    navigate("/BNIForm"); // Navigate to the form after agreeing
+  };
    const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -63,19 +70,54 @@ const ConferenceBanner = () => {
 
           {/* Register Button */}
           <Button
-            variant="contained"
-            color="error"
-            sx={{
-              mt: 3,
-              px: 4,
-              py: 1.5,
-              fontSize: "1rem",
-              textTransform: "uppercase",
-            }}
-            onClick={() => navigate("/BNIForm")}
-          >
-            Register Now
+        variant="contained"
+        color="error"
+        sx={{
+          mt: 3,
+          px: 4,
+          py: 1.5,
+          fontSize: "1rem",
+          textTransform: "uppercase",
+        }}
+        onClick={handleOpen}
+      >
+        Register Now
+      </Button>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Terms and Conditions</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" gutterBottom>
+            1. Add 1 table & 2 chairs
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            2. Table top branding allowed - Tent cards, pamphlets & brochures
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            3. Registration included for display table owners
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            4. Allocation of tables will be based on power teams
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            5. No edible items to be displayed or sold
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            6. Heavy product displays are not allowed
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            7. No direct sales are encouraged in the stalls
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
           </Button>
+          <Button onClick={handleAgree} color="primary">
+            Agree and Continue
+          </Button>
+        </DialogActions>
+      </Dialog>
 
           {/* Countdown Timer */}
           <Box sx={{ mt: 3, position:"relative", left:isMobile?"0px":"-60px" }}>
@@ -107,11 +149,11 @@ const ConferenceBanner = () => {
         <br />
         <Connect />
         <br />
-        {/* <AboutDetails /> */}
+       
         <br />
-        {/* <HotelDetails /> */}
+        <HotelDetails />
         <br />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </div>
   );

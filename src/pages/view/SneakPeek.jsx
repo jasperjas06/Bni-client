@@ -70,7 +70,7 @@ const BNIHighlights = () => {
       lineHeight: '1.3',
       color: '#000',
       marginTop: '80px',
-      position: 'relative', /* if you want to adjust position */
+      position: 'relative',
       left: '300px',
       maxWidth: '120px'
 
@@ -79,7 +79,7 @@ const BNIHighlights = () => {
 
   const highlightItems = [
     {
-      icon: Member,  // Corrected the image reference
+      icon: Member, 
       label: 'Inaugural Session'
     },
     {
@@ -130,25 +130,3 @@ const BNIHighlights = () => {
 };
 
 export default BNIHighlights;
-// <div style={styles.mainContainer}>
-  // <div style={styles.titleContainer}>
-  //   <h1 style={styles.mainTitle}>BNI INC</h1>
-  //   <h2 style={styles.subTitle}>Highlights</h2>
-  //   <h2 style={styles.subTitle}>Sneak Peek</h2>
-  // </div>
-
-  // <div style={styles.gridContainer}>
-  //   {highlightItems.map((item, index) => (
-  //     <div key={index} style={styles.gridItem}>
-  //       <div style={styles.iconWrapper}>
-  //         <img
-  //           src={item.icon}
-  //           alt={item.label}
-  //           style={styles.icon}
-  //         />
-  //       </div>
-  //       <span style={styles.label}>{item.label}</span>
-  //     </div>
-  //   ))}
-  // </div>
-// </div>
