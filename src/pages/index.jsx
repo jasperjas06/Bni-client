@@ -11,6 +11,7 @@ import BNIHighlights from "../pages/view/SneakPeek";
 import Connect from "../pages/view/Connect";
 import Footer from "../pages/view/copyright";
 import HotelDetails from "../pages/view/map";
+import Poster from "../assets/poster.jpg"
 const ConferenceBanner = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const ConferenceBanner = () => {
         backgroundRepeat: "no-repeat",
         minHeight: "100vh", // Ensure full height
       }}>
-      <Box sx={{padding:"20px", ml:{md:"100px", xs:0},}}>
+      <Box sx={{padding:"20px", ml:{md:"90px", xs:0},}}>
       <img
             src={RegionlImage}
             alt="Regional Event"
@@ -135,7 +136,14 @@ const ConferenceBanner = () => {
 
         {/* Right Image */}
         <Grid item xs={12} md={6} display="flex" justifyContent="center" >
-          
+        <img
+            src={Poster}
+            alt="Regional Event"
+            style={{ width: "100%", maxWidth: "700px", borderRadius: "12px", boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}
+          />
+          <Box>
+            <Typography></Typography>
+          </Box>
         </Grid>
       </Grid>
     </Container>
