@@ -5,7 +5,7 @@ const footerStyles = {
     backgroundColor: '#000',
    
     color: '#fff',
-    padding: '32px',
+   
   },
   container: {
     width: '100%',
@@ -54,20 +54,11 @@ const Footer = () => {
     <footer style={footerStyles.footer}>
       <div style={footerStyles.container}>
         <div style={footerStyles.flexContainer}>
-          {/* Terms and Conditions Link */}
-          
-
-          {/* Download Buttons */}
-          <div style={footerStyles.downloadButtons}>
-           
-         
-         
-          </div>
-
+      
           {/* Copyright Text */}
           <div style={footerStyles.copyright}>
             <p>
-              Copyright 2025 BNI India Enterprises Pvt Ltd
+              Copyright 2025 BNI Chennai CBD B
             </p>
           </div>
         </div>

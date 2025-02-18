@@ -107,11 +107,11 @@ const ConferenceBanner = () => {
         <br />
         <Connect />
         <br />
-        {/* <AboutDetails /> */}
+        <AboutDetails />
         <br />
-        {/* <HotelDetails /> */}
+        <HotelDetails />
         <br />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </div>
   );
