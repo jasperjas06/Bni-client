@@ -5,7 +5,7 @@ import CountdownTimer from "../components/Time";
 import { useNavigate } from "react-router-dom";
 import ConferenceSection from "../pages/view/whyattend";
 import BNIEventDetails from "../pages/view/networkevent";
-import RegionlImage from "../assets/Regional.jpg";
+import RegionlImage from "../assets/Regional_Logo.jpg";
 import backgroundImage from "../assets/image.jpg";
 import BNIHighlights from "../pages/view/SneakPeek";
 import Connect from "../pages/view/Connect";
@@ -32,11 +32,19 @@ const ConferenceBanner = () => {
         backgroundRepeat: "no-repeat",
         minHeight: "100vh", // Ensure full height
       }}>
-      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8,position:"relative", top:"100px" }, textAlign: "center" }}>
+      <Box sx={{padding:"20px", ml:{md:"100px", xs:0},}}>
+      <img
+            src={RegionlImage}
+            alt="Regional Event"
+            style={{ width: "100%", maxWidth: "500px", borderRadius: "12px", boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}
+          />
+      </Box>
+      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 4,position:"relative", top:"0" }, textAlign: "center" }}>
       <Grid container spacing={4} alignItems="center">
         
         {/* Left Content */}
         <Grid item xs={12} md={6} textAlign={{ xs: "center", md: "left" }}>
+        
           <Typography 
             variant="h4" 
             fontWeight="bold" 
@@ -126,12 +134,8 @@ const ConferenceBanner = () => {
         </Grid>
 
         {/* Right Image */}
-        <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <img
-            src={RegionlImage}
-            alt="Regional Event"
-            style={{ width: "100%", maxWidth: "500px", borderRadius: "12px", boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}
-          />
+        <Grid item xs={12} md={6} display="flex" justifyContent="center" >
+          
         </Grid>
       </Grid>
     </Container>
@@ -150,6 +154,7 @@ const ConferenceBanner = () => {
         <BNIHighlights />
         <br />
         <br />
+        <br />
         <Connect />
         <br />
         <br />
@@ -157,7 +162,6 @@ const ConferenceBanner = () => {
         <br />
         <br />
         <HotelDetails />
-        <br />
         <br />
         <Footer />
       </div>

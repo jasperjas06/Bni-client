@@ -95,19 +95,19 @@ const BNIHighlights = () => {
   ];
 
   return (
-<Container maxWidth="lg" sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, alignItems: "center",justifyContent:"center", gap: 4, mt: 4 }}>
+<Container maxWidth="lg" sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, alignItems: "center",justifyContent:"space-around", gap: 4, mt: 4 }}>
       {/* Left Column (Headings) */}
       <Box sx={{ display: "flex", flexDirection: "column", textAlign: { xs: "center", md: "left" } }}>
         <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>BNI CBD-B</Typography>
         <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>Highlights</Typography>
-        <Typography variant="h4" sx={{ m: 0, fontWeight: "bold" }}>Sneak Peek</Typography>
+        <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>Sneak Peek</Typography>
       </Box>
 
       {/* Right Column (Icons) */}
       <Box sx={{
         display: "flex",
         flexWrap: "wrap",
-        maxWidth: { xs: "100%", md: "400px" },
+        maxWidth: { xs: "100%", md: "100%" },
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",

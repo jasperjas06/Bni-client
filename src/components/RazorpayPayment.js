@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Box, IconButton, Modal, Typography } from "@mui/material";
+import { CheckCircle, Close } from "@mui/icons-material";
 
 const RazorpayPayment = () => {
   let {type} = useParams()
+  const [open,setOpen]= useState(false)
   // console.log(type,"text")
   const navigate = useNavigate();
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
@@ -159,7 +162,8 @@ const RazorpayPayment = () => {
         localStorage.removeItem("name")
         localStorage.removeItem("email")
         localStorage.removeItem("synergy")
-        setTimeout(() => navigate("/"), 2000);
+        setOpen(true)
+        // setTimeout(() => navigate("/"), 2000);
       } else {
         toast.error("Payment verification failed.");
       }
@@ -168,10 +172,77 @@ const RazorpayPayment = () => {
     }
   };
 
+  const onClose = ()=>{
+    setOpen(false)
+    navigate("/")
+  }
+
 
   return (
     <div style={{ height: "100vh", backgroundColor: "#f8f9fa", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      
+      <center>Loading....</center>
+      <Modal
+      open={open}
+      onClose={onClose}
+      aria-labelledby="success-modal"
+    >
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: { xs: '90%', sm: 400 },
+        bgcolor: 'background.paper',
+        borderRadius: 2,
+        boxShadow: 24,
+        p: 4,
+      }}>
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: 'grey.500'
+          }}
+        >
+          <Close />
+        </IconButton>
+
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center',
+          textAlign: 'center'
+        }}>
+          <CheckCircle 
+            sx={{ 
+              fontSize: 64,
+              color: 'success.main',
+              mb: 2
+            }} 
+          />
+          
+          <Typography 
+            variant="h5" 
+            component="h2" 
+            sx={{ 
+              mb: 2,
+              fontWeight: 600
+            }}
+          >
+            Registration Successful!
+          </Typography>
+
+          <Typography 
+            variant="body1"
+            color="text.secondary"
+          >
+            Thank you for registering! Your registration has been completed successfully.
+          </Typography>
+        </Box>
+      </Box>
+    </Modal>
     </div>
   );
 };
