@@ -553,33 +553,7 @@ const BNIForm = () => {
             </div>
           </div>
 
-          {/* Gst and Buss */}
-          <div className="name-fields">
-          <div className="form-group">
-              <label>
-              GST Details 
-              </label>
-              <input
-                type="text"
-                name="gstDetails"
-                placeholder="Your GST Details"
-                value={formData.gstDetails}
-                onChange={handleChange}
-              />
-            </div>
-          <div className="form-group">
-              <label>
-              Business Name
-              </label>
-              <input
-                type="text"
-                name="businessName"
-                placeholder="Your Business Name"
-                value={formData.businessName}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
+         
 
           {/* Name Fields */}
 
@@ -701,6 +675,33 @@ const BNIForm = () => {
               </div>
             </div>
           )}
+           {/* Gst and Buss */}
+           <div className="name-fields">
+          <div className="form-group">
+              <label>
+              GST Details 
+              </label>
+              <input
+                type="text"
+                name="gstDetails"
+                placeholder="Your GST Details"
+                value={formData.gstDetails}
+                onChange={handleChange}
+              />
+            </div>
+          <div className="form-group">
+              <label>
+              Business Name
+              </label>
+              <input
+                type="text"
+                name="businessName"
+                placeholder="Your Business Name"
+                value={formData.businessName}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
 
           {/* Terms & Conditions */}
           <div className="form-group">
