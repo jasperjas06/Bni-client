@@ -130,6 +130,7 @@ const RazorpayPayment = () => {
             email: email,
             amount: response.data.amount,
             name: name,
+            type:type
           });
         },
         prefill: { name: name || "John Doe", email: email,},
