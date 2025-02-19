@@ -23,7 +23,7 @@ const BNIForm = () => {
     businessType: "",
     synergy: false,
   });
-  const [loader, setloader] = useState(false)
+  const [loader, setloader] = useState(false);
   const [chapters, setChapters] = useState([]);
   const [tablecount, setTablecount] = useState("");
   const [members, setMembers] = useState([]);
@@ -50,11 +50,11 @@ const BNIForm = () => {
 
   // Fetch Chapters
   useEffect(() => {
-    let url  =""
-    if(formData.synergy === "Yes"){
+    let url = "";
+    if (formData.synergy === "Yes") {
       url = `${baseUrl}/synergy-chapter`;
-    }else{
-      url = `${baseUrl}/getOnlyChapterNames`
+    } else {
+      url = `${baseUrl}/getOnlyChapterNames`;
     }
     // console.log("Fetching from:", url);
     axios
@@ -78,26 +78,24 @@ const BNIForm = () => {
     const timer = setTimeout(() => {
       // console.log(searchQuery,"search")
       setIsLoading(true); // Set loading state while fetching
-      let url =""
-      
-    if(formData.synergy == "Yes" && formData.chapterName) {
-        url = `${baseUrl}/synergy-member?chapterName=${formData.chapterName}`;
-      }
+      let url = "";
 
-      else{
+      if (formData.synergy == "Yes" && formData.chapterName) {
+        url = `${baseUrl}/synergy-member?chapterName=${formData.chapterName}`;
+      } else {
         url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}`;
-    }
+      }
 
       axios
         .get(url)
         .then((response) => {
           const data = response.data?.data || [];
-          console.log(response.data.data,url)
+          console.log(response.data.data, url);
           const filteredMembers = data.filter((member) => !member.isRegistered);
-          if(formData.registrationType === "Member"){
+          if (formData.registrationType === "Member") {
             setMembers(filteredMembers);
-          }else{
-            setMembers(data)
+          } else {
+            setMembers(data);
           }
         })
         .catch((error) => console.error("Error fetching members:", error))
@@ -146,8 +144,8 @@ const BNIForm = () => {
     setFormData((prev) => ({ ...prev, registrationType: value }));
   };
   const handleSynergyChange = (value) => {
-    setFormData((prev) => ({ ...prev, synergy: value}));
-  }
+    setFormData((prev) => ({ ...prev, synergy: value }));
+  };
 
   const handleChapterChange = (value) => {
     setFormData((prev) => ({ ...prev, chapterName: value })); // Reset memberName when chapter changes
@@ -166,40 +164,45 @@ const BNIForm = () => {
     // console.log(value);
     setFormData((prev) => ({
       ...prev,
-      memberName: formData.synergy == "Yes" ? `${value["MemberName"]}`: `${value["First Name"]} ${value["Last Name"]}`,
+      memberName:
+        formData.synergy == "Yes"
+          ? `${value["MemberName"]}`
+          : `${value["First Name"]} ${value["Last Name"]}`,
     }));
     setDropdownOpenMember(false);
   };
 
   const filteredMembers = members.filter((member) => {
-    const fullName = `${member["First Name"] || member["MemberName"]} ${member["Last Name"] || ""}`.toLowerCase();
+    const fullName = `${member["First Name"] || member["MemberName"]} ${
+      member["Last Name"] || ""
+    }`.toLowerCase();
     return fullName.includes(searchQuery.toLowerCase());
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       setloader(true);
-  
+
       // Validate required fields
       if (!formData.termsAccepted) {
         toast.error("Please accept the terms.");
         setloader(false);
         return;
       }
-  
+
       if (!formData.email || !formData.registrationType) {
         toast.error("Please fill in all required fields");
         setloader(false);
         return;
       }
-      if(formData.registrationType !== "Visitor" && !formData.powerTeam){
+      if (formData.registrationType !== "Visitor" && !formData.powerTeam) {
         toast.error("Please fill in all required fields (Power Team)");
         setloader(false);
         return;
       }
-  
+
       // Common data validation
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
       if (!isValidEmail) {
@@ -207,17 +210,17 @@ const BNIForm = () => {
         setloader(false);
         return;
       }
-  
+
       // Phone number validation (assuming 10 digits)
       if (formData.mobileNumber && !/^\d{10}$/.test(formData.mobileNumber)) {
         toast.error("Please enter a valid 10-digit mobile number");
         setloader(false);
         return;
       }
-  
+
       let url;
       let newobj;
-  
+
       // Prepare request data based on registration type
       switch (formData.registrationType) {
         case "Goody bag":
@@ -232,7 +235,7 @@ const BNIForm = () => {
             phone: formData.mobileNumber?.trim(),
           };
           break;
-  
+
         case "Member":
           url = `${baseUrl}/updateMember`;
           newobj = {
@@ -247,7 +250,7 @@ const BNIForm = () => {
             isRegistered: true,
           };
           break;
-  
+
         case "Visitor":
           url = `${baseUrl}/visitorRegister`;
           newobj = {
@@ -263,7 +266,7 @@ const BNIForm = () => {
             businessType: formData.businessType?.trim(),
           };
           break;
-  
+
         case "Display Table":
           url = `${baseUrl}/displaytable`;
           newobj = {
@@ -277,33 +280,37 @@ const BNIForm = () => {
             synergy: formData.synergy?.trim(),
           };
           break;
-  
+
         default:
           toast.error("Invalid registration type");
           setloader(false);
           return;
       }
-  
+
       // Validate that required fields are present in newobj
-      const requiredFields = ['email', 'chapterName'];
-      const missingFields = requiredFields.filter(field => !newobj[field]);
-      
+      const requiredFields = ["email", "chapterName"];
+      const missingFields = requiredFields.filter((field) => !newobj[field]);
+
       if (missingFields.length > 0) {
-        toast.error(`Please fill in the following required fields: ${missingFields.join(', ')}`);
+        toast.error(
+          `Please fill in the following required fields: ${missingFields.join(
+            ", "
+          )}`
+        );
         setloader(false);
         return;
       }
-  
+
       // Make API request
       try {
         const response = await axios.post(url, newobj);
-        
+
         if (response?.data) {
           // Store data in localStorage
           localStorage.setItem("email", formData.email);
-          
+
           // Set name based on registration type
-          let name = '';
+          let name = "";
           if (formData.registrationType === "Member") {
             name = `${newobj.firstName} ${newobj.lastName}`;
           } else if (formData.registrationType === "Visitor") {
@@ -312,14 +319,14 @@ const BNIForm = () => {
             name = newobj.memberName;
           }
           localStorage.setItem("name", name);
-  
+
           // Store synergy if present
           if (formData.synergy) {
             localStorage.setItem("synergy", formData.synergy);
           }
-  
+
           toast.success(response.data.message || "Registration successful!");
-          
+
           // Navigate after a delay
           setTimeout(() => {
             navigate(`/payment/${formData.registrationType}`);
@@ -327,18 +334,20 @@ const BNIForm = () => {
         }
       } catch (error) {
         let errorMessage = "An error occurred during registration";
-        
+
         if (error.response) {
           // Server responded with an error
-          errorMessage = error.response.data?.message || error.response.statusText;
+          errorMessage =
+            error.response.data?.message || error.response.statusText;
         } else if (error.request) {
           // Request was made but no response
-          errorMessage = "No response from server. Please check your connection.";
+          errorMessage =
+            "No response from server. Please check your connection.";
         } else {
           // Something else went wrong
           errorMessage = error.message;
         }
-        
+
         toast.error(errorMessage);
         console.error("Registration error:", error);
       }
@@ -374,7 +383,9 @@ const BNIForm = () => {
 
           <div className="form-group">
             <br />
-            <label>Registration Type <span style={{color:"red"}}>*</span></label>
+            <label>
+              Registration Type <span style={{ color: "red" }}>*</span>
+            </label>
             <div className="radio-group">
               {["Member", "Visitor", "Display Table", "Goody bag"].map(
                 (type) => (
@@ -400,14 +411,14 @@ const BNIForm = () => {
             </div>
           </div>
 
-          {
-            formData.registrationType === "Display Table" &&
+          {formData.registrationType === "Display Table" && (
             <div className="form-group">
-            {/* <br /> */}
-            <label>Synergy stal owner <span style={{color:"red"}}>*</span></label>
-            <div className="radio-group">
-              {["Yes", "No"].map(
-                (type) => (
+              {/* <br /> */}
+              <label>
+                Synergy stal owner <span style={{ color: "red" }}>*</span>
+              </label>
+              <div className="radio-group">
+                {["Yes", "No"].map((type) => (
                   <label key={type}>
                     <input
                       type="radio"
@@ -419,15 +430,16 @@ const BNIForm = () => {
                     />
                     {type}
                   </label>
-                )
-              )}
+                ))}
+              </div>
             </div>
-          </div>
-          }
+          )}
 
           {formData.registrationType === "Visitor" && (
             <div className="form-group">
-              <label>Name <span style={{color:"red"}}>*</span></label>
+              <label>
+                Name <span style={{ color: "red" }}>*</span>
+              </label>
               <div className="name-fields">
                 <input
                   type="text"
@@ -452,7 +464,9 @@ const BNIForm = () => {
           {/* Chapter Name Dropdown */}
           <div className="name-fields">
             <div className="form-group">
-              <label>Chapter Name <span style={{color:"red"}}>*</span></label>
+              <label>
+                Chapter Name <span style={{ color: "red" }}>*</span>
+              </label>
               <div className="dropdown-container" ref={chapterDropdownRef}>
                 <input
                   type="text"
@@ -484,56 +498,62 @@ const BNIForm = () => {
             </div>
             {/* Member Name Dropdown */}
             <div className="form-group">
-  <label>Member Name <span style={{color:"red"}}>*</span></label>
-  <div className="dropdown-container" ref={memberDropdownRef}>
-    <input
-      type="text"
-      name="memberName"
-      placeholder="Search Member"
-      value={formData.memberName}
-      onClick={() => setDropdownOpenMember(!dropdownOpenMember)}
-      onChange={(e) => {
-        setSearchQuery(e.target.value); // Update search query
-        setFormData((prev) => ({
-          ...prev,
-          memberName: e.target.value,
-        }));
-      }}
-      className="dropdown-input"
-    />
-    {dropdownOpenMember && (
-      <div className="dropdown-list">
-        {isLoading ? (
-          <div className="dropdown-item">Loading...</div>
-        ) : filteredMembers.length > 0 ? (
-          filteredMembers.map((item, index) => (
-            <div
-              key={index}
-              className="dropdown-item"
-              onClick={() => handleMemberChange(item)}
-            >
-              {item["First Name"] || item["MemberName"]}{" "}
-              {item["Last Name"] ? item["Last Name"] : ""}
+              <label>
+                Member Name <span style={{ color: "red" }}>*</span>
+              </label>
+              <div className="dropdown-container" ref={memberDropdownRef}>
+                <input
+                  type="text"
+                  name="memberName"
+                  placeholder="Search Member"
+                  value={formData.memberName}
+                  onClick={() => setDropdownOpenMember(!dropdownOpenMember)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value); // Update search query
+                    setFormData((prev) => ({
+                      ...prev,
+                      memberName: e.target.value,
+                    }));
+                  }}
+                  className="dropdown-input"
+                />
+                {dropdownOpenMember && (
+                  <div className="dropdown-list">
+                    {isLoading ? (
+                      <div className="dropdown-item">Loading...</div>
+                    ) : filteredMembers.length > 0 ? (
+                      filteredMembers.map((item, index) => (
+                        <div
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => handleMemberChange(item)}
+                        >
+                          {item["First Name"] || item["MemberName"]}{" "}
+                          {item["Last Name"] ? item["Last Name"] : ""}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="dropdown-item">No members found</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-          ))
-        ) : (
-          <div className="dropdown-item">No members found</div>
-        )}
-      </div>
-    )}
-  </div>
-</div>
-
           </div>
 
           {/* Name Fields */}
 
           <div className="form-group">
-            <label>Email <span style={{color:"red"}}>*</span></label>
+            <label>
+              Email <span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="email"
               name="email"
-              readOnly={formData.registrationType !== "Visitor" || formData.synergy !== "Yes"}
+              readOnly={
+                formData.registrationType !== "Visitor" ||
+                formData.synergy !== "Yes"
+              }
               placeholder="Your Email"
               value={formData.email}
               onChange={handleChange}
@@ -542,7 +562,9 @@ const BNIForm = () => {
           </div>
           {formData.registrationType === "Visitor" && (
             <div className="form-group">
-              <label>Profession <span style={{color:"red"}}>*</span></label>
+              <label>
+                Profession <span style={{ color: "red" }}>*</span>
+              </label>
               <input
                 type="text"
                 name="businessType"
@@ -556,7 +578,9 @@ const BNIForm = () => {
 
           {/* Contact Details */}
           <div className="form-group">
-            <label>Mobile Number <span style={{color:"red"}}>*</span></label>
+            <label>
+              Mobile Number <span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="tel"
               name="mobileNumber"
@@ -579,7 +603,9 @@ const BNIForm = () => {
 
           {formData.registrationType !== "Visitor" && (
             <div className="form-group">
-              <label>Category in BNI <span style={{color:"red"}}>*</span></label>
+              <label>
+                Category in BNI <span style={{ color: "red" }}>*</span>
+              </label>
               <input
                 type="text"
                 name="categoryInBNI"
@@ -592,42 +618,46 @@ const BNIForm = () => {
 
           {formData.registrationType !== "Visitor" && (
             <div className="name-fields">
-            <div className="form-group">
-              <label>Power Team <span style={{color:"red"}}>*</span></label>
-              <div className="dropdown-container" ref={powerDropdownRef}>
-                <input
-                  type="text"
-                  name="powerTeam"
-                  placeholder="Select Power Team"
-                  value={formData.powerTeam}
-                  required={true}
-                  readOnly
-                  onClick={() =>
-                    setdropdownOpenPowerTeam(!dropdownOpenPowerTeam)
-                  }
-                  className="dropdown-input"
-                />
-                {dropdownOpenPowerTeam && (
-                  <div className="dropdown-list">
-                    {powerTeam.length > 0 ? (
-                      powerTeam.map((powerteam, index) => (
-                        <div
-                          key={index}
-                          className="dropdown-item"
-                          onClick={() => handlePowerTeamChange(powerteam.name)}
-                        >
-                          {typeof powerteam === "object"
-                            ? powerteam.name
-                            : powerteam}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="dropdown-item">No Power Team found</div>
-                    )}
-                  </div>
-                )}
+              <div className="form-group">
+                <label>
+                  Power Team <span style={{ color: "red" }}>*</span>
+                </label>
+                <div className="dropdown-container" ref={powerDropdownRef}>
+                  <input
+                    type="text"
+                    name="powerTeam"
+                    placeholder="Select Power Team"
+                    value={formData.powerTeam}
+                    required={true}
+                    readOnly
+                    onClick={() =>
+                      setdropdownOpenPowerTeam(!dropdownOpenPowerTeam)
+                    }
+                    className="dropdown-input"
+                  />
+                  {dropdownOpenPowerTeam && (
+                    <div className="dropdown-list">
+                      {powerTeam.length > 0 ? (
+                        powerTeam.map((powerteam, index) => (
+                          <div
+                            key={index}
+                            className="dropdown-item"
+                            onClick={() =>
+                              handlePowerTeamChange(powerteam.name)
+                            }
+                          >
+                            {typeof powerteam === "object"
+                              ? powerteam.name
+                              : powerteam}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="dropdown-item">No Power Team found</div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
             </div>
           )}
 
@@ -644,38 +674,40 @@ const BNIForm = () => {
               I agree to the <a href="#">Terms and Conditions</a>. All fees are
               non-refundable and non-transferable.
             </label>
-            {
-              formData.registrationType === "Display Table" &&
-            <ul style={{marginTop:0}}>
-          <li variant="body1" gutterBottom>
-             Add 1 table & 2 chairs
-          </li>
-          <li variant="body1" gutterBottom>
-             Table top branding allowed - Tent cards, pamphlets & brochures
-          </li>
-          <li variant="body1" gutterBottom>
-             Registration included for display table owners
-          </li>
-          <li variant="body1" gutterBottom>
-             Allocation of tables will be based on power teams
-          </li>
-          <li variant="body1" gutterBottom>
-             No edible items to be displayed or sold
-          </li>
-          <li variant="body1" gutterBottom>
-             Heavy product displays are not allowed
-          </li>
-          <li variant="body1" gutterBottom>
-            7. No direct sales are encouraged in the stalls
-          </li>
-        </ul>
-            }
+            {formData.registrationType === "Display Table" && (
+              <ul style={{ marginTop: 0 }}>
+                <li variant="body1" gutterBottom>
+                  Add 1 table & 2 chairs
+                </li>
+                <li variant="body1" gutterBottom>
+                  Table top branding allowed - Tent cards, pamphlets & brochures
+                </li>
+                <li variant="body1" gutterBottom>
+                  Registration included for display table owners
+                </li>
+                <li variant="body1" gutterBottom>
+                  Allocation of tables will be based on power teams
+                </li>
+                <li variant="body1" gutterBottom>
+                  No edible items to be displayed or sold
+                </li>
+                <li variant="body1" gutterBottom>
+                  Heavy product displays are not allowed
+                </li>
+                <li variant="body1" gutterBottom>
+                  7. No direct sales are encouraged in the stalls
+                </li>
+              </ul>
+            )}
           </div>
 
-          <button type="submit" style={{backgroundColor:loader?"gray":"#007bff"}} disabled={loader} className="submit-btn">
-            {
-              loader ? "Submitting..." : "Submit"
-            }
+          <button
+            type="submit"
+            style={{ backgroundColor: loader ? "gray" : "#007bff" }}
+            disabled={loader}
+            className="submit-btn"
+          >
+            {loader ? "Submitting..." : "Submit"}
           </button>
         </form>
       </div>
