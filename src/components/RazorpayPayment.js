@@ -132,7 +132,7 @@ const RazorpayPayment = () => {
             name: name,
           });
         },
-        prefill: { name: name || "John Doe", email: email, contact: "9487670852" },
+        prefill: { name: name || "John Doe", email: email,},
         notes: { address: "Corporate Office" },
         theme: { color: "#3399cc" },
       };
