@@ -98,8 +98,8 @@ const BNIHighlights = () => {
 <Container maxWidth="lg" sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, alignItems: "center",justifyContent:"space-around", gap: 4, mt: 4 }}>
       {/* Left Column (Headings) */}
       <Box sx={{ display: "flex", flexDirection: "column", textAlign: { xs: "center", md: "left" } }}>
-        <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>BNI CBD-B </Typography>
-        <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>Chennai South</Typography>
+        <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>BNI Chennai</Typography>
+        <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>CBD-B South</Typography>
         <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>Highlights</Typography>
         <Typography variant="h3" sx={{ m: 0, fontWeight: "bold" }}>Sneak Peek</Typography>
       </Box>

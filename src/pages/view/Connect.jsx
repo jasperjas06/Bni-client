@@ -27,7 +27,7 @@ const BNIHighlights = () => {
         </Typography>
         <Typography variant="body1" sx={{ fontSize: "1.2rem", lineHeight: "1.75", color: "#1f2937" }}>
           Elevate your brand at the 14th Anniversary! Seize this unique chance to showcase your Business
-          to Top Entrepreneurs, Leaders, and Decision-Makers from across the Region. Stand out, Connect, and Grow with us.
+          to Top Entrepreneurs, Leaders and Decision-Makers from across the Region. Stand out, Connect, and Grow with us.
         </Typography>
       </Box>
     </Container>

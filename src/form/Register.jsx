@@ -303,7 +303,9 @@ const BNIForm = () => {
 
       // Make API request
       try {
-        const response = await axios.post(url, newobj);
+        const response = formData.registrationType === "Member"
+        ? await axios.put(url, newobj)  // Use PUT if registrationType is "Member"
+        : await axios.post(url, newobj);
 
         if (response?.data) {
           // Store data in localStorage
@@ -695,7 +697,7 @@ const BNIForm = () => {
                   Heavy product displays are not allowed
                 </li>
                 <li variant="body1" gutterBottom>
-                  7. No direct sales are encouraged in the stalls
+                   No direct sales are encouraged in the stalls
                 </li>
               </ul>
             )}

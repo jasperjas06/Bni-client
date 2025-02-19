@@ -28,21 +28,21 @@ const RazorpayPayment = () => {
     { start: "2025-01-01", end: "2025-03-15", amount: 472 ,bannerAmount:400},  
     { start: "2025-03-16", end: "2025-03-31", amount: 590 ,bannerAmount:500},  
     { start: "2025-04-01", end: "2025-04-07", amount: 767 ,bannerAmount:700},  
-    { start: "2025-04-06", end: "2025-12-31", amount: 900 ,bannerAmount:900},
+    { start: "2025-04-08", end: "2025-12-31", amount: 900 ,bannerAmount:900},
   ];
 
   const GoodyBagPaymentData = [
-    { start: "2025-01-01", end: "2025-03-15", amount: 4720 ,bannerAmount:4000},  
-    { start: "2025-03-16", end: "2025-03-31", amount: 472 },  
-    { start: "2025-04-01", end: "2025-04-07", amount: 590 },  
-    { start: "2025-04-06", end: "2025-12-31", amount: 6000 , bannerAmount:6000},
+    { start: "2025-01-01", end: "2025-04-07", amount: 4720 ,bannerAmount:4000},  
+    // { start: "2025-03-16", end: "2025-03-31", amount: 472 },  
+    // { start: "2025-04-01", end: "2025-04-07", amount: 590 },  
+    { start: "2025-04-08", end: "2025-12-31", amount: 6000 , bannerAmount:6000},
   ];
 
   const DisplayTablePaymentData = [
     { start: "2025-01-01", end: "2025-03-15", amount: 4720 ,bannerAmount:4000},  
     { start: "2025-03-16", end: "2025-03-31", amount: 5900 ,bannerAmount:5000},  
     { start: "2025-04-01", end: "2025-04-07", amount: 6490 ,bannerAmount:5500},  
-    { start: "2025-04-06", end: "2025-12-31", amount: 7000 ,bannerAmount:7000},
+    { start: "2025-04-08", end: "2025-12-31", amount: 7000 ,bannerAmount:7000},
   ];
 
   useEffect(() => {

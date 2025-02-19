@@ -243,7 +243,9 @@ const BNIConferencePromo = () => {
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           Address
         </Typography>
-        <Typography>Agurchand Manmull Jain College, (A.M. Jain College)</Typography>
+      <div style={{display:"flex", flexWrap:"wrap", justifyContent:"center"}}>
+        <Typography sx={{textAlign:"center"}}>Agurchand Manmull Jain College, </Typography><Typography sx={{textAlign:"center"}}>(A.M. Jain College)</Typography>
+      </div>
         <Typography>Meenambakkam, Chennai, Tamilnadu 600061</Typography>
       </Box>
 

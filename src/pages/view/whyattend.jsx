@@ -16,7 +16,7 @@ const BNIConferencePromo = () => {
       color: '#1f2937',
       marginBottom: '16px',}}>
         Elevate your brand at the 14th Anniversary! Seize this unique chance to showcase your
-         Business to Top Entrepreneurs, Leaders, and Becision-Makers
+         Business to Top Entrepreneurs, Leaders and Decision-Makers
          from across the Region. Stand out, Connect, and Grow with us.
         </Container>
       </Container>
