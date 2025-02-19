@@ -21,6 +21,8 @@ const BNIForm = () => {
     categoryInBNI: "",
     termsAccepted: false,
     businessType: "",
+    gstDetails:"",
+    businessName:"",
     synergy: false,
   });
   const [loader, setloader] = useState(false);
@@ -233,6 +235,8 @@ const BNIForm = () => {
             email: formData.email?.trim(),
             whatsappNumber: formData.whatsappNumber?.trim(),
             phone: formData.mobileNumber?.trim(),
+            businessName:formData.businessName,
+            gstDetails:formData.gstDetails
           };
           break;
 
@@ -248,6 +252,8 @@ const BNIForm = () => {
             whatsappNumber: formData.whatsappNumber?.trim(),
             phone: formData.mobileNumber?.trim(),
             isRegistered: true,
+            businessName:formData.businessName,
+            gstDetails:formData.gstDetails
           };
           break;
 
@@ -264,6 +270,8 @@ const BNIForm = () => {
             invitedBy: formData.memberName?.trim(),
             isRegistered: true,
             businessType: formData.businessType?.trim(),
+            businessName:formData.businessName,
+            gstDetails:formData.gstDetails
           };
           break;
 
@@ -278,6 +286,8 @@ const BNIForm = () => {
             whatsappNumber: formData.whatsappNumber?.trim(),
             phone: formData.mobileNumber?.trim(),
             synergy: formData.synergy?.trim(),
+            businessName:formData.businessName,
+            gstDetails:formData.gstDetails
           };
           break;
 
@@ -417,7 +427,7 @@ const BNIForm = () => {
             <div className="form-group">
               {/* <br /> */}
               <label>
-                Synergy stal owner <span style={{ color: "red" }}>*</span>
+                Synergy stall owner <span style={{ color: "red" }}>*</span>
               </label>
               <div className="radio-group">
                 {["Yes", "No"].map((type) => (
@@ -543,6 +553,34 @@ const BNIForm = () => {
             </div>
           </div>
 
+          {/* Gst and Buss */}
+          <div className="name-fields">
+          <div className="form-group">
+              <label>
+              GST Details 
+              </label>
+              <input
+                type="text"
+                name="gstDetails"
+                placeholder="Your GST Details"
+                value={formData.gstDetails}
+                onChange={handleChange}
+              />
+            </div>
+          <div className="form-group">
+              <label>
+              Business Name
+              </label>
+              <input
+                type="text"
+                name="businessName"
+                placeholder="Your Business Name"
+                value={formData.businessName}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
           {/* Name Fields */}
 
           <div className="form-group">
@@ -586,7 +624,7 @@ const BNIForm = () => {
             <input
               type="tel"
               name="mobileNumber"
-              placeholder="81234 56789"
+              placeholder="Your Mobile Number"
               value={formData.mobileNumber}
               onChange={handleChange}
               required
@@ -597,7 +635,7 @@ const BNIForm = () => {
             <input
               type="tel"
               name="whatsappNumber"
-              placeholder="81234 56789"
+              placeholder="Your WhatsApp Number"
               value={formData.whatsappNumber}
               onChange={handleChange}
             />
@@ -611,6 +649,7 @@ const BNIForm = () => {
               <input
                 type="text"
                 name="categoryInBNI"
+                placeholder="Your Category in BNI"
                 value={formData.categoryInBNI}
                 onChange={handleChange}
                 required
