@@ -73,10 +73,10 @@ const BNIForm = () => {
 
   // Fetch Members based on selected Chapter
   useEffect(() => {
-    if (!formData.chapterName || !searchQuery) return;
+    if (!formData.chapterName) return;
 
     const timer = setTimeout(() => {
-      console.log(searchQuery,"search")
+      // console.log(searchQuery,"search")
       setIsLoading(true); // Set loading state while fetching
       let url =""
       
@@ -84,15 +84,9 @@ const BNIForm = () => {
         url = `${baseUrl}/synergy-member?chapterName=${formData.chapterName}`;
       }
 
-      if(formData.chapterName){
+      else{
         url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}`;
     }
-    if (searchQuery) {  // Ensure no spaces are counted as valid input
-      url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}&memberName=${searchQuery}`;
-  } if(searchQuery == ""){
-    url = `${baseUrl}/getMembers?chapterName=${formData.chapterName}`;
-  }
-  
 
       axios
         .get(url)
@@ -112,7 +106,7 @@ const BNIForm = () => {
 
     // Cleanup function to clear the timer if the searchQuery changes before timeout
     return () => clearTimeout(timer);
-  }, [searchQuery, formData.chapterName, formData.registrationType, formData.synergy]);
+  }, [formData.chapterName, formData.registrationType, formData.synergy]);
 
   // Close dropdown when clicking outside (for chapters)
   useEffect(() => {
@@ -176,6 +170,11 @@ const BNIForm = () => {
     }));
     setDropdownOpenMember(false);
   };
+
+  const filteredMembers = members.filter((member) => {
+    const fullName = `${member["First Name"] || member["MemberName"]} ${member["Last Name"] || ""}`.toLowerCase();
+    return fullName.includes(searchQuery.toLowerCase());
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -375,7 +374,7 @@ const BNIForm = () => {
 
           <div className="form-group">
             <br />
-            <label>Registration Type</label>
+            <label>Registration Type <span style={{color:"red"}}>*</span></label>
             <div className="radio-group">
               {["Member", "Visitor", "Display Table", "Goody bag"].map(
                 (type) => (
@@ -405,7 +404,7 @@ const BNIForm = () => {
             formData.registrationType === "Display Table" &&
             <div className="form-group">
             {/* <br /> */}
-            <label>Synergy stal owner</label>
+            <label>Synergy stal owner <span style={{color:"red"}}>*</span></label>
             <div className="radio-group">
               {["Yes", "No"].map(
                 (type) => (
@@ -428,7 +427,7 @@ const BNIForm = () => {
 
           {formData.registrationType === "Visitor" && (
             <div className="form-group">
-              <label>Name</label>
+              <label>Name <span style={{color:"red"}}>*</span></label>
               <div className="name-fields">
                 <input
                   type="text"
@@ -453,7 +452,7 @@ const BNIForm = () => {
           {/* Chapter Name Dropdown */}
           <div className="name-fields">
             <div className="form-group">
-              <label>Chapter Name</label>
+              <label>Chapter Name <span style={{color:"red"}}>*</span></label>
               <div className="dropdown-container" ref={chapterDropdownRef}>
                 <input
                   type="text"
@@ -485,54 +484,56 @@ const BNIForm = () => {
             </div>
             {/* Member Name Dropdown */}
             <div className="form-group">
-              <label>Member Name</label>
-              <div className="dropdown-container" ref={memberDropdownRef}>
-                <input
-                  type="text"
-                  name="memberName"
-                  placeholder="Search Member"
-                  value={formData.memberName} // Ensures the input reflects state
-                  onClick={() => setDropdownOpenMember(!dropdownOpenMember)}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value); // Update search query
-                    setFormData((prev) => ({
-                      ...prev,
-                      memberName: e.target.value,
-                    })); // Update formData with current input value
-                  }}
-                  className="dropdown-input"
-                />
-                {dropdownOpenMember && (
-                  <div className="dropdown-list">
-                    {isLoading ? (
-                      <div className="dropdown-item">Loading...</div>
-                    ) : members.length > 0 ? (
-                      members.map((item, index) => (
-                        <div
-                          key={index}
-                          className="dropdown-item"
-                          onClick={() => handleMemberChange(item)}
-                        >
-                          {item["First Name"]|| item["MemberName"]} {item["Last Name"] ? item["Last Name"]: ""}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="dropdown-item">No members found</div>
-                    )}
-                  </div>
-                )}
-              </div>
+  <label>Member Name <span style={{color:"red"}}>*</span></label>
+  <div className="dropdown-container" ref={memberDropdownRef}>
+    <input
+      type="text"
+      name="memberName"
+      placeholder="Search Member"
+      value={formData.memberName}
+      onClick={() => setDropdownOpenMember(!dropdownOpenMember)}
+      onChange={(e) => {
+        setSearchQuery(e.target.value); // Update search query
+        setFormData((prev) => ({
+          ...prev,
+          memberName: e.target.value,
+        }));
+      }}
+      className="dropdown-input"
+    />
+    {dropdownOpenMember && (
+      <div className="dropdown-list">
+        {isLoading ? (
+          <div className="dropdown-item">Loading...</div>
+        ) : filteredMembers.length > 0 ? (
+          filteredMembers.map((item, index) => (
+            <div
+              key={index}
+              className="dropdown-item"
+              onClick={() => handleMemberChange(item)}
+            >
+              {item["First Name"] || item["MemberName"]}{" "}
+              {item["Last Name"] ? item["Last Name"] : ""}
             </div>
+          ))
+        ) : (
+          <div className="dropdown-item">No members found</div>
+        )}
+      </div>
+    )}
+  </div>
+</div>
+
           </div>
 
           {/* Name Fields */}
 
           <div className="form-group">
-            <label>Email</label>
+            <label>Email <span style={{color:"red"}}>*</span></label>
             <input
               type="email"
               name="email"
-              // readOnly={(formData.registrationType !== "Visitor" || formData.synergy == "No") ? true : false}
+              readOnly={formData.registrationType !== "Visitor" || formData.synergy !== "Yes"}
               placeholder="Your Email"
               value={formData.email}
               onChange={handleChange}
@@ -541,7 +542,7 @@ const BNIForm = () => {
           </div>
           {formData.registrationType === "Visitor" && (
             <div className="form-group">
-              <label>Profession </label>
+              <label>Profession <span style={{color:"red"}}>*</span></label>
               <input
                 type="text"
                 name="businessType"
@@ -555,7 +556,7 @@ const BNIForm = () => {
 
           {/* Contact Details */}
           <div className="form-group">
-            <label>Mobile Number</label>
+            <label>Mobile Number <span style={{color:"red"}}>*</span></label>
             <input
               type="tel"
               name="mobileNumber"
@@ -578,7 +579,7 @@ const BNIForm = () => {
 
           {formData.registrationType !== "Visitor" && (
             <div className="form-group">
-              <label>Category in BNI</label>
+              <label>Category in BNI <span style={{color:"red"}}>*</span></label>
               <input
                 type="text"
                 name="categoryInBNI"
@@ -592,7 +593,7 @@ const BNIForm = () => {
           {formData.registrationType !== "Visitor" && (
             <div className="name-fields">
             <div className="form-group">
-              <label>Power Team</label>
+              <label>Power Team <span style={{color:"red"}}>*</span></label>
               <div className="dropdown-container" ref={powerDropdownRef}>
                 <input
                   type="text"
@@ -643,6 +644,8 @@ const BNIForm = () => {
               I agree to the <a href="#">Terms and Conditions</a>. All fees are
               non-refundable and non-transferable.
             </label>
+            {
+              formData.registrationType === "Display Table" &&
             <ul style={{marginTop:0}}>
           <li variant="body1" gutterBottom>
              Add 1 table & 2 chairs
@@ -666,6 +669,7 @@ const BNIForm = () => {
             7. No direct sales are encouraged in the stalls
           </li>
         </ul>
+            }
           </div>
 
           <button type="submit" style={{backgroundColor:loader?"gray":"#007bff"}} disabled={loader} className="submit-btn">
