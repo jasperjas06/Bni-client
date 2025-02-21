@@ -565,8 +565,7 @@ const BNIForm = () => {
               type="email"
               name="email"
               readOnly={
-                formData.registrationType !== "Visitor" ||
-                formData.synergy !== "Yes"
+                formData.registrationType !== "Visitor" 
               }
               placeholder="Your Email"
               value={formData.email}
