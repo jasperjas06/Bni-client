@@ -24,6 +24,11 @@ import Connect from "../pages/view/Connect";
 import Footer from "../pages/view/copyright";
 import HotelDetails from "../pages/view/map";
 import Poster from "../assets/poster.jpg";
+import ImageCarousel from "./view/Carousel";
+import slide1 from "../assets/slide1.jpg"
+import slide2 from "../assets/slide2.jpg"
+import slide3 from "../assets/slide3.jpg"
+import slide4 from "../assets/slide4.jpg"
 const ConferenceBanner = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -38,6 +43,7 @@ const ConferenceBanner = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const currentDate = new Date(); // Get today's date
   const cutoffDate = new Date("2025-04-08"); // 8th April 2025
+  const imagesArray = [slide1,slide2,slide3,slide4  ];
   return (
     <div>
       <div
@@ -212,6 +218,21 @@ const ConferenceBanner = () => {
       </div>
       <br />
       <div>
+
+      <Container>
+      <center>
+      <h1 style={{fontSize: '2.87rem',
+      color: '#dc2626',
+      fontWeight: 'bold',
+      position: 'relative',}}>
+         Early Bird Offers
+        </h1>
+
+      </center>
+      <ImageCarousel images={imagesArray}/>
+      </Container>
+        <br />
+        <br />
         <ConferenceSection />
         <br />
         <br />
@@ -224,8 +245,6 @@ const ConferenceBanner = () => {
         <br />
         <Connect />
         <br />
-        <br />
-
         <br />
         <br />
         <HotelDetails />

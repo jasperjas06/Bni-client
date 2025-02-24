@@ -32,10 +32,8 @@ const RazorpayPayment = () => {
   ];
 
   const GoodyBagPaymentData = [
-    { start: "2025-01-01", end: "2025-04-07", amount: 4720 ,bannerAmount:4000},  
-    // { start: "2025-03-16", end: "2025-03-31", amount: 472 },  
-    // { start: "2025-04-01", end: "2025-04-07", amount: 590 },  
-    { start: "2025-04-08", end: "2025-12-31", amount: 6000 , bannerAmount:6000},
+    { start: "2025-01-01", end: "2025-03-15", amount: 4720 ,bannerAmount:4000},    
+    { start: "2025-03-16", end: "2025-12-31", amount: 6000 , bannerAmount:6000},
   ];
 
   const DisplayTablePaymentData = [
