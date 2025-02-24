@@ -43,7 +43,7 @@ const ConferenceBanner = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const currentDate = new Date(); // Get today's date
   const cutoffDate = new Date("2025-04-08"); // 8th April 2025
-  const imagesArray = [slide1,slide2,slide3,slide4  ];
+  const imagesArray = [slide4,slide1,slide3,slide2,  ];
   return (
     <div>
       <div
