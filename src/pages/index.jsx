@@ -114,7 +114,7 @@ const ConferenceBanner = () => {
                 <CalendarToday sx={{ color: "gray" }} />
                 <Typography variant="h6">April 12, 2025</Typography>
                 <Schedule sx={{ color: "gray" }} />
-                <Typography variant="h6">02:00 PM</Typography>
+                <Typography variant="h6">02:00 PM - 06:00 PM</Typography>
               </Box>
               <Box
                 display="flex"

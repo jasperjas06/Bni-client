@@ -25,9 +25,10 @@ const BNIEventDetails = () => {
         </ul>
       </Container>
       <div style={{
-        fontSize: "1rem",
-      color: "rgb(207, 32, 48)",
+        fontSize: "1.2rem",
+      color: "#dc2626",
       lineHeight: "1.6",
+      fontWeight:"bold"
       }}>
       BNI Chennai CBD B & South 14th Anniversary is a flagship annual event of
         BNI Chennai and a perfect confluence of Business, Networking and Celebrations. The event will take place on 12 April 2025 at

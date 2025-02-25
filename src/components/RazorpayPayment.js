@@ -15,6 +15,7 @@ const RazorpayPayment = () => {
   const email = localStorage.getItem("email");
   const name = localStorage.getItem("name");
   const synergy = localStorage.getItem("synergy")
+  const mobile = localStorage.getItem("contact")
 
   // Payment Data Based on Date Ranges
   const memberPaymentData = [
@@ -33,7 +34,7 @@ const RazorpayPayment = () => {
 
   const GoodyBagPaymentData = [
     { start: "2025-01-01", end: "2025-03-15", amount: 4720 ,bannerAmount:4000},    
-    { start: "2025-03-16", end: "2025-12-31", amount: 6000 , bannerAmount:6000},
+    { start: "2025-03-16", end: "2025-12-31", amount: 7080 , bannerAmount:6000},
   ];
 
   const DisplayTablePaymentData = [
@@ -131,7 +132,7 @@ const RazorpayPayment = () => {
             type:type
           });
         },
-        prefill: { name: name || "John Doe", email: email,},
+        prefill: { name: name || "", email: email, contact:mobile || "8754445068"},
         notes: { address: "Corporate Office" },
         theme: { color: "#3399cc" },
       };
@@ -161,6 +162,7 @@ const RazorpayPayment = () => {
         localStorage.removeItem("name")
         localStorage.removeItem("email")
         localStorage.removeItem("synergy")
+        localStorage.removeItem("contact")
         setOpen(true)
         // setTimeout(() => navigate("/"), 2000);
       } else {

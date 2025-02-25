@@ -320,6 +320,7 @@ const BNIForm = () => {
         if (response?.data) {
           // Store data in localStorage
           localStorage.setItem("email", formData.email);
+          localStorage.setItem("contact", formData.mobileNumber);
 
           // Set name based on registration type
           let name = "";
