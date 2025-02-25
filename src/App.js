@@ -11,9 +11,9 @@ function App() {
 
         {/* Routes */}
         <Routes>
-          {/* <Route path="/" element={<Homepage />} /> 
+          <Route path="/" element={<Homepage />} /> 
           <Route path="/registration_form" element={<BNIForm />} />
-          <Route path="/payment/:type" element={<RazorpayPayment/>} /> */}
+          <Route path="/payment/:type" element={<RazorpayPayment/>} />
         </Routes>
       </div>
     </Router>

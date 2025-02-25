@@ -741,6 +741,29 @@ const BNIForm = () => {
                 </li>
               </ul>
             )}
+
+            {formData.registrationType === "Goodie bag" &&
+              <ul style={{ marginTop: 0 }}>
+                <li variant="body1" gutterBottom>
+                Only Members can add their Give away Gifts to the Members and Visitors.
+                </li>
+                <li variant="body1" gutterBottom>
+                Gifts can include some tangible items like Pens, Card Holders, Key Chains, Table Tops, and so on with their Branding.
+                </li>
+                <li variant="body1" gutterBottom>
+                Pamphlets, Gift Vouchers,  other Marketing tools can be added. Max A4 Sheet Size only.
+                </li>
+                <li variant="body1" gutterBottom>
+                Eatables / Perishable Goods are not allowed in the bags.
+                </li>
+                <li variant="body1" gutterBottom>
+                Kindly send your Items (1000 nos.) to the Regional Office on or before 31st March 2025.
+                </li>
+                <li variant="body1" gutterBottom>
+                For More Clarity, kindly reach out to Your Chapter Leadership Team or Growth Director.
+                </li>
+              </ul>
+            }
           </div>
 
           <button
