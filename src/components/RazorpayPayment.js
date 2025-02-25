@@ -64,7 +64,7 @@ const RazorpayPayment = () => {
       paymentData = memberPaymentData;
     } else if(type == "Visitor") {
       paymentData = VisitorPaymentData;
-    } else if(type == "Goody bag") {
+    } else if(type == "Goodie bag") {
       paymentData = GoodyBagPaymentData;
     } else if(type == "Display Table") {
       paymentData = DisplayTablePaymentData;

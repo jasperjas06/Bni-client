@@ -225,7 +225,7 @@ const BNIForm = () => {
 
       // Prepare request data based on registration type
       switch (formData.registrationType) {
-        case "Goody bag":
+        case "Goodie bag":
           url = `${baseUrl}/goodybag`;
           newobj = {
             memberName: formData.memberName?.trim(),
@@ -400,7 +400,7 @@ const BNIForm = () => {
               Registration Type <span style={{ color: "red" }}>*</span>
             </label>
             <div className="radio-group">
-              {["Member", "Visitor", "Display Table", "Goody bag"].map(
+              {["Member", "Visitor", "Display Table", "Goodie bag"].map(
                 (type) => (
                   <label key={type}>
                     <input
