@@ -93,7 +93,7 @@ const BNIForm = () => {
         .then((response) => {
           const data = response.data?.data || [];
           console.log(response.data.data, url);
-          const filteredMembers = data.filter((member) => !member.isRegistered);
+          const filteredMembers = data.filter((member) => !member.isPaid || !member.isRegistered );
           if (formData.registrationType === "Member") {
             setMembers(filteredMembers);
           } else {
