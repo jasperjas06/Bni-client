@@ -236,7 +236,8 @@ const BNIForm = () => {
             whatsappNumber: formData.whatsappNumber?.trim(),
             phone: formData.mobileNumber?.trim(),
             businessName:formData.businessName,
-            gstDetails:formData.gstDetails
+            gstDetails:formData.gstDetails,
+            isRegistered: true,
           };
           break;
 
@@ -338,12 +339,12 @@ const BNIForm = () => {
             localStorage.setItem("synergy", formData.synergy);
           }
 
-          toast.success(response.data.message || "Registration successful!");
+          // toast.success(response.data.message || "Registration successful!");
 
           // Navigate after a delay
-          setTimeout(() => {
-            navigate(`/payment/${formData.registrationType}`);
-          }, 2000);
+          navigate(`/payment/${formData.registrationType}`);
+          // setTimeout(() => {
+          // }, 2000);
         }
       } catch (error) {
         let errorMessage = "An error occurred during registration";
