@@ -714,7 +714,7 @@ const BNIForm = () => {
                 onChange={handleChange}
                 required
               />
-              I agree to the <a href="#">Terms and Conditions</a>. All fees are
+              I agree to the <a href="/termsandconditions">Terms and Conditions</a>. All fees are
               non-refundable and non-transferable.
             </label>
             {formData.registrationType === "Display Table" && (
