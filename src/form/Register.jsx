@@ -24,7 +24,6 @@ const BNIForm = () => {
     gstDetails:"",
     businessName:"",
     synergy: false,
-    regionName:""
   });
   const [loader, setloader] = useState(false);
   const [chapters, setChapters] = useState([]);
@@ -200,12 +199,11 @@ const BNIForm = () => {
         setloader(false);
         return;
       }
-      if (!(formData.registrationType === "Visitor" || formData.registrationType === "Other Regions") && !formData.powerTeam) {
+      if (formData.registrationType !== "Visitor" && !formData.powerTeam) {
         toast.error("Please fill in all required fields (Power Team)");
         setloader(false);
         return;
       }
-  
 
       // Common data validation
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
@@ -275,23 +273,6 @@ const BNIForm = () => {
             businessType: formData.businessType?.trim(),
             businessName:formData.businessName,
             gstDetails:formData.gstDetails
-          };
-          break;
-
-        case "Other Regions":
-          url = `${baseUrl}/otherRegionReg`;
-          newobj = {
-            firstname: formData.firstName?.trim(),
-            lastname: formData.lastName?.trim(),
-            regionName: formData.regionName?.trim(),
-            chapterName: formData.chapterName?.trim(),
-            email: formData.email?.trim(),
-            whatsappNumber: formData.whatsappNumber?.trim(),
-            phone: formData.mobileNumber?.trim(),
-            isRegistered: true,
-            businessName:formData.businessName,
-            gstDetails:formData.gstDetails,
-            categoryInBNI: formData.categoryInBNI?.trim(),
           };
           break;
 
@@ -420,7 +401,7 @@ const BNIForm = () => {
               Registration Type <span style={{ color: "red" }}>*</span>
             </label>
             <div className="radio-group">
-              {["Member", "Visitor", "Display Table", "Goodie bag","Other Regions"].map(
+              {["Member", "Visitor", "Display Table", "Goodie bag"].map(
                 (type) => (
                   <label key={type}>
                     <input
@@ -443,7 +424,6 @@ const BNIForm = () => {
               )}
             </div>
           </div>
-          
 
           {formData.registrationType === "Display Table" && (
             <div className="form-group">
@@ -469,68 +449,34 @@ const BNIForm = () => {
             </div>
           )}
 
-          {(formData.registrationType === "Visitor" || formData.registrationType === "Other Regions") && (
-  <div className="form-group">
-    <label>
-      Name <span style={{ color: "red" }}>*</span>
-    </label>
-    <div className="name-fields">
-      <input
-        type="text"
-        name="firstName"
-        placeholder="First Name"
-        value={formData.firstName}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="lastName"
-        placeholder="Last Name"
-        value={formData.lastName}
-        onChange={handleChange}
-        required
-      />
-    </div>
-  </div>
-)}
-{
-            formData.registrationType === "Other Regions" && (
-              <div className="">
-    <label>
-      Region Name <span style={{ color: "red" }}>*</span>
-    </label>
-    <div className="">
-      <input
-        type="text"
-        name="regionName"
-        placeholder="Region Name"
-        value={formData.regionName}
-        onChange={handleChange}
-        required
-      />
-      <br/>
-      <br/>
-      <label>
-      Chapter Name <span style={{ color: "red" }}>*</span>
-    </label>
-      <input
-        type="text"
-        name="chapterName"
-        placeholder="Chapter Name"
-        value={formData.chapterName}
-        onChange={handleChange}
-        required
-      />
-    </div>
-  </div>
-            )
-          }
+          {formData.registrationType === "Visitor" && (
+            <div className="form-group">
+              <label>
+                Name <span style={{ color: "red" }}>*</span>
+              </label>
+              <div className="name-fields">
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          )}
           {formData.registrationType === "Visitor" && <label>Invited By</label>}
-{
-  formData.registrationType === "Other Regions" ?
-  null:
-  <div className="name-fields">
+          {/* Chapter Name Dropdown */}
+          <div className="name-fields">
             <div className="form-group">
               <label>
                 Chapter Name <span style={{ color: "red" }}>*</span>
@@ -608,12 +554,11 @@ const BNIForm = () => {
               </div>
             </div>
           </div>
-}
+
+         
+
           {/* Name Fields */}
-          {
-            formData.registrationType === "Other Regions" ?
-            <br/>:null
-          }
+
           <div className="form-group">
             <label>
               Email <span style={{ color: "red" }}>*</span>
@@ -621,8 +566,9 @@ const BNIForm = () => {
             <input
               type="email"
               name="email"
-              readOnly={!(formData.registrationType === "Visitor" || formData.registrationType === "Other Regions")}
-
+              readOnly={
+                formData.registrationType !== "Visitor" 
+              }
               placeholder="Your Email"
               value={formData.email}
               onChange={handleChange}
@@ -686,7 +632,7 @@ const BNIForm = () => {
             </div>
           )}
 
-          {!(formData.registrationType === "Visitor" || formData.registrationType === "Other Regions") && (
+          {formData.registrationType !== "Visitor" && (
             <div className="name-fields">
               <div className="form-group">
                 <label>
@@ -768,7 +714,7 @@ const BNIForm = () => {
                 onChange={handleChange}
                 required
               />
-              I agree to the <a href="/14anniversary/termsandconditions">Terms and Conditions</a>. All fees are
+              I agree to the <a href="/termsandconditions">Terms and Conditions</a>. All fees are
               non-refundable and non-transferable.
             </label>
             {formData.registrationType === "Display Table" && (
