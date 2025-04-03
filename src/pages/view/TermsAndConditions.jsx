@@ -89,7 +89,7 @@ import {
       content: "Your privacy is important to us. Please refer to our Privacy Policy for details on data handling and protection.",
       link: {
         label: "View Privacy Policy",
-        href: "/privacypolicy"
+        href: "/14anniversary/privacypolicy"
       }
     },
     {
