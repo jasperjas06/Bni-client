@@ -2,6 +2,7 @@
   "name": "bni-anniversary14",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/14anniversary",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

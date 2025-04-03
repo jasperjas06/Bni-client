@@ -6,8 +6,8 @@ import TermsAndConditions from "./pages/view/TermsAndConditions";
 import PrivacyPolicy from "./pages/view/PrivacyPolicy";
 function App() {
   return (
-    <Router>
-      <div className="App">
+    <Router basename="/14anniversary" >
+      <div className="App" >
         {/* Navigation Bar */}
      
 
